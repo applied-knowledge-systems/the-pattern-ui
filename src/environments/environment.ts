@@ -1,5 +1,5 @@
 export const environment = {
   production: false,
-  redisUrl: 'http://10.144.17.211:8181'
+  redisUrl: 'http://127.0.0.1:8181/'
 };
 
