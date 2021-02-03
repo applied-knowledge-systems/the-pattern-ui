@@ -17,12 +17,15 @@ export interface IEdge{
 export interface ISearchResult{
     nodes: INode[],
     links: ILink[],
+    years: any[]
 }
 
 export interface AppState {
     isLoading: boolean;
     error: any;
+    searchTerm: string,
     searchResults: { search_result: ISearchResult };
+    searchYears: any;
     edgeResults: IEdge[];
     nodeResults: any;
     toolBarStyle: string;
@@ -34,7 +37,9 @@ export interface AppState {
 export const initialState: AppState = {
     isLoading: false,
     error: null,
+    searchTerm:'',
     searchResults: null,
+    searchYears: null,
     edgeResults: [],
     nodeResults: null,
     toolBarStyle: 'dark',

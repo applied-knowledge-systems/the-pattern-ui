@@ -1,5 +1,4 @@
 import { Component, OnInit, Input } from '@angular/core';
-import { Observable } from 'rxjs';
 import { Store } from '@ngrx/store';
 import {State} from '../../redux/state';
 import * as AppSelectors from '../../redux/selectors';
@@ -14,7 +13,7 @@ import { filter, map, distinctUntilChanged } from 'rxjs/operators';
 export class SidebarComponent implements OnInit {
   open = false;
   selected: any;
-  results$: any;
+  edgeData$: any;
 
   constructor(private store: Store<State>) { }
 
@@ -25,7 +24,6 @@ export class SidebarComponent implements OnInit {
       .pipe(filter(x => x!=null))
       .subscribe(open => {
         this.open = open;
-        console.log(this.open)
       }
     );
 
@@ -37,7 +35,7 @@ export class SidebarComponent implements OnInit {
       }
     );
 
-    this.results$ = this.store.select(AppSelectors.selectEdgeResults);
+    this.edgeData$ = this.store.select(AppSelectors.selectEdgeResults);
   }
 
   closeSidebar() {

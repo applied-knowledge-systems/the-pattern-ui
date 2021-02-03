@@ -1,11 +1,12 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup } from '@angular/forms';
 import { Options } from '@angular-slider/ngx-slider';
-import { debounceTime } from 'rxjs/operators';
+import { debounceTime, filter } from 'rxjs/operators';
 import { Store } from '@ngrx/store';
 
 import { State } from '../../redux/state';
 import { Create } from 'src/app/redux/actions';
+import * as AppSelectors from '../../redux/selectors';
 
 @Component({
   selector: 'app-slider',
@@ -14,37 +15,60 @@ import { Create } from 'src/app/redux/actions';
 })
 export class SliderComponent implements OnInit {
   form: FormGroup;
-  minValue = 50;
-  maxValue = 200;
+  years = []
+  initYear = 2001;
+  searchTerm = '';
   options: Options = {
-    floor: 0,
-    ceil: 250,
-    step: 5
+    floor: this.initYear,
+    ceil: this.initYear
   };
+
+  get year() { return this.form.get('year') }
 
   constructor(fb: FormBuilder, private store: Store<State>) {
     this.form = fb.group({
-      sliderControl: new FormControl([this.minValue, this.maxValue])
+      year: new FormControl(this.initYear)
     });
   }
 
   reset() {
-    this.form.reset({ sliderControl: [this.minValue, this.maxValue]})
+    this.form.reset(this.initYear)
   }
 
 
 
   ngOnInit() {
-    this.form.valueChanges.pipe(debounceTime(500)).subscribe(snapshot => {
-      console.log("From reactive form");
-      console.log(snapshot);
-    })
+
+    this.store.select<any>(AppSelectors.selectSearchYears)
+      .pipe(filter(x => x!=null))
+      .subscribe((results) => {
+        this.changeSliderOptions(results)
+      }
+    );
+
+    this.store.select<any>(AppSelectors.selectSearchTerm)
+      .pipe(filter(x => x!=null))
+      .subscribe((term) => {
+        this.searchTerm = term
+      }
+    );
   }
 
-  fetchFilteredData(startValue, endValue) {
+  changeSliderOptions(years) {
+    const newOptions: Options = Object.assign({}, this.options);
+    newOptions.stepsArray = years.list.map((year: string) => {
+      return { value: year }
+    });
+    newOptions.ceil = years.max || this.initYear
+    newOptions.floor = years.min || this.initYear
+    this.year.setValue(years.median)
+    this.options = newOptions;
+  }
+  
+  fetchFilteredData() {
     // dispatch redux action
     this.store.dispatch(new Create({
-      data: { start: startValue, end: endValue },
+      data: { years: [this.year.value], search: this.searchTerm },
       state: 'searchResults',
       route: 'gsearch'
     }));
