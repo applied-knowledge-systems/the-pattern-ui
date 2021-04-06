@@ -64,13 +64,13 @@ export class SliderComponent implements OnInit {
     this.year.setValue(years.median)
     this.options = newOptions;
   }
-  
+
   fetchFilteredData() {
     // dispatch redux action
     this.store.dispatch(new Create({
       data: { years: [this.year.value], search: this.searchTerm },
       state: 'searchResults',
-      route: 'gsearch'
+      route: 'search'
     }));
   }
 
