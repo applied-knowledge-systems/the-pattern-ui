@@ -14,8 +14,6 @@
   "private": true,
   "dependencies": {
     "3d-force-graph": "^1.67.8",
-    "3d-force-graph-ar": "^1.6.1",
-    "3d-force-graph-vr": "^1.35.2",
     "@angular-slider/ngx-slider": "^2.0.3",
     "@angular/animations": "~9.1.13",
     "@angular/common": "~9.1.13",
@@ -31,8 +29,6 @@
     "@ngrx/effects": "^8.6.1",
     "@ngrx/store": "^8.6.1",
     "@ngrx/store-devtools": "^8.6.1",
-    "aframe": "^1.0.4",
-    "aframe-ar": "^0.2.1-a",
     "angular2-notifications": "^9.0.0",
     "bootstrap": "^4.6.0",
     "express-ws": "^4.0.0",

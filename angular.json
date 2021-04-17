@@ -35,10 +35,7 @@
               "src/assets/vendor/icofont/icofont.min.css"
             ],
             "scripts": [
-              "node_modules/aframe/dist/aframe.js",
-              "node_modules/aframe-ar/dist/aframe-ar.js",
-              "node_modules/3d-force-graph/dist/3d-force-graph.js",
-              "node_modules/3d-force-graph-ar/dist/3d-force-graph-ar.js"
+              "node_modules/3d-force-graph/dist/3d-force-graph.js"
             ]
           },
           "configurations": {
