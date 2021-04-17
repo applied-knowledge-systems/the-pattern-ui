@@ -22,6 +22,7 @@ export interface ISearchResult{
 
 export interface AppState {
     isLoading: boolean;
+    isLoadingState: string;
     error: any;
     searchTerm: string,
     searchResults: { search_result: ISearchResult };
@@ -36,6 +37,7 @@ export interface AppState {
 
 export const initialState: AppState = {
     isLoading: false,
+    isLoadingState: '',
     error: null,
     searchTerm:'',
     searchResults: null,

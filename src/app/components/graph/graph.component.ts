@@ -33,6 +33,9 @@ export class GraphComponent implements OnInit {
   threeRenderer: any;
   threeControls: any;
   threeCamera: any;
+
+  loading$;
+  loadingState$;
   
   constructor(private store: Store<State>) {}
 
@@ -47,6 +50,9 @@ export class GraphComponent implements OnInit {
         this.initializeGraph();
       }
     );
+
+    this.loading$ = this.store.select(AppSelectors.selectIsLoading)
+    this.loadingState$ = this.store.select(AppSelectors.selectIsLoadingState)
 
     this.store.select(AppSelectors.selectUX)
       .pipe(map(x => x.sidebar))
