@@ -6,4 +6,5 @@ body {
     background-color: #37474f !important;
     height: calc(100vh - #{$navbarHeight});
     font-family: "Open Sans", sans-serif;
+    overflow: hidden;
 }
