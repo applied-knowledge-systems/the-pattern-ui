@@ -70,7 +70,7 @@ export class SliderComponent implements OnInit {
     this.store.dispatch(new Create({
       data: { years: [this.year.value], search: this.searchTerm },
       state: 'searchResults',
-      route: 'gsearch'
+      route: 'search'
     }));
   }
 

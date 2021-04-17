@@ -52,7 +52,7 @@ export class SearchFormComponent implements OnInit {
         data: { search: this.term.value },
         state: 'searchResults',
         postProcess: 'map:years', 
-        route: 'gsearch',
+        route: 'search',
         navigateTo: { route: 'search', query: { q: this.term.value }}
       }));
 
