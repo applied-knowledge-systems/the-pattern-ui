@@ -1,16 +1,15 @@
 import { Component, OnInit, ViewChild, ElementRef, HostListener, Output, EventEmitter, Input } from '@angular/core';
-import { Observable, of } from 'rxjs';
 import SpriteText from 'three-spritetext';
 import { UnrealBloomPass } from 'three/examples/jsm/postprocessing/UnrealBloomPass.js';
+import {VRButton} from 'three/examples/jsm/webxr/VRButton';
 import { MeshBasicMaterial, SphereGeometry, Mesh, Vector2 } from 'three';
 import { Store } from '@ngrx/store';
-import { State, ISearchResult} from '../../redux/state';
+import { State } from '../../redux/state';
 import * as AppSelectors from '../../redux/selectors';
 import { filter, distinctUntilChanged, map } from 'rxjs/operators';
 import { Read, Set as SetStoreValue } from 'src/app/redux/actions.js';
 
 declare var ForceGraph3D;
-import {VRButton} from 'three/examples/jsm/webxr/VRButton';
 
 @Component({
   selector: 'app-graph',
@@ -35,9 +34,7 @@ export class GraphComponent implements OnInit {
   threeControls: any;
   threeCamera: any;
   
-  constructor(private store: Store<State>) {
-    
-  }
+  constructor(private store: Store<State>) {}
 
   ngOnInit() {
     this.canvasHeight = window.innerHeight - 128;
@@ -186,6 +183,9 @@ export class GraphComponent implements OnInit {
   initXR(){
     this.threeRenderer.xr.enabled = true;
     document.body.appendChild(VRButton.createButton(this.threeRenderer));
+    this.threeRenderer.setAnimationLoop(() => {
+      this.threeRenderer.render(this.threeScene, this.threeCamera)
+    });
   }
 
 }
