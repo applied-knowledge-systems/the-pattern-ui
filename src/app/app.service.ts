@@ -18,12 +18,12 @@ export class AppService {
   // searchSocket: WebSocketSubject<any> = webSocket(environment.redisUrl + '/search');
   // graphSocket: WebSocketSubject<any> = webSocket(environment.redisUrl + '/graph');
 
-  searchUri = 'http://api.thepattern.digital/gsearch'
-  
+  searchUri = 'http://api.thepattern.digital/search'
+
   graphData$: Observable<any>;
   searchData$: Observable<any>;
 
-  constructor(private http: HttpClient) { 
+  constructor(private http: HttpClient) {
     // this.searchData$ = this.searchSocket.asObservable();
     // this.searchSocket.asObservable().subscribe(dataFromServer => {
     //   console.log('search data')
@@ -34,7 +34,7 @@ export class AppService {
     // this.graphData$.subscribe(dataFromServer => {
     //   console.log('graph data')
     //   console.log(dataFromServer)
-    // }) 
+    // })
   }
 
   // search(search){
