@@ -17,22 +17,23 @@ export class SearchFormComponent implements OnInit {
   searchForm: FormGroup;
   get term() { return this.searchForm.get('term'); }
 
-  // searches
-  // "Effectiveness of case isolation/isolation of exposed individuals (i.e. quarantine)",
-  // "Effectiveness of community contact reduction",
-  // "Effectiveness of inter/inner travel restriction",
-  // "Effectiveness of school distancing",
-  // "Effectiveness of workplace distancing",
-  // "Effectiveness of a multifactorial strategy prevent secondary transmission",
-  // "Seasonality of transmission",
-  // "How does temperature and humidity affect the transmission of 2019-nCoV?",
-  // "Significant changes in transmissibility in changing seasons?",
-  // "Effectiveness of personal protective equipment (PPE)"
+  samples = [
+    "Effectiveness of case isolation/isolation of exposed individuals (i.e. quarantine)",
+    "Effectiveness of community contact reduction",
+    "Effectiveness of inter/inner travel restriction",
+    "Effectiveness of school distancing",
+    "Effectiveness of workplace distancing",
+    "Effectiveness of a multifactorial strategy prevent secondary transmission",
+    "Seasonality of transmission",
+    "How does temperature and humidity affect the transmission of 2019-nCoV?",
+    "Significant changes in transmissibility in changing seasons?",
+    "Effectiveness of personal protective equipment (PPE)"
+  ]
+  
 
   constructor(private store: Store<State>, fb: FormBuilder, route: ActivatedRoute) {
     this.searchForm = fb.group({
-      // 'term': ['', Validators.required]
-      'term': ['following variants', Validators.required]
+      'term': ['', Validators.required]
     });
 
     route.queryParams.pipe(filter(x => x['q'] !== null)).subscribe(x => {
