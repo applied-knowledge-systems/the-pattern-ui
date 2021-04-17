@@ -28,8 +28,8 @@ export class SearchFormComponent implements OnInit {
   // "How does temperature and humidity affect the transmission of 2019-nCoV?",
   // "Significant changes in transmissibility in changing seasons?",
   // "Effectiveness of personal protective equipment (PPE)"
-  
-  constructor(private store: Store<State>, fb: FormBuilder, route: ActivatedRoute) { 
+
+  constructor(private store: Store<State>, fb: FormBuilder, route: ActivatedRoute) {
     this.searchForm = fb.group({
       // 'term': ['', Validators.required]
       'term': ['following variants', Validators.required]
