@@ -1,7 +1,7 @@
 import { Component, OnInit, ViewChild, ElementRef, HostListener, Output, EventEmitter, Input } from '@angular/core';
 import { Observable, of } from 'rxjs';
 import SpriteText from 'three-spritetext';
-import { UnrealBloomPass } from '../../../../node_modules/three/examples/jsm/postprocessing/UnrealBloomPass.js';
+import { UnrealBloomPass } from 'three/examples/jsm/postprocessing/UnrealBloomPass.js';
 import { MeshBasicMaterial, SphereGeometry, Mesh, Vector2 } from 'three';
 import { Store } from '@ngrx/store';
 import { State, ISearchResult} from '../../redux/state';
