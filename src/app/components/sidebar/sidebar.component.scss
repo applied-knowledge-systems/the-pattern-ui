@@ -2,7 +2,7 @@
 
 .sidebar {
     margin-top: $navbarHeight;
-    min-height: 100%;
+    height: 100%;
     width: 320px;
     display: none;
     position: fixed;
@@ -14,6 +14,7 @@
     overflow-x: hidden;
     overflow-y: auto;
     padding: 16px;
+    padding-bottom: 32px;
     transition: 0.5s;
 
     a.closebtn{
