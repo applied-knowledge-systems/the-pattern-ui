@@ -14,6 +14,8 @@ export class SidebarComponent implements OnInit {
   open = false;
   selected: any;
   edgeData$: any;
+  loading$;
+  loadingState$;
 
   constructor(private store: Store<State>) { }
 
@@ -36,6 +38,8 @@ export class SidebarComponent implements OnInit {
     );
 
     this.edgeData$ = this.store.select(AppSelectors.selectEdgeResults);
+    this.loading$ = this.store.select(AppSelectors.selectIsLoading)
+    this.loadingState$ = this.store.select(AppSelectors.selectIsLoadingState)
   }
 
   closeSidebar() {

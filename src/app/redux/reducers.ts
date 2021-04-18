@@ -18,11 +18,11 @@ export function appReducer(state = initialState, action: allActions.Actions): Ap
             }
         
         case allActions.CREATE:
-            return Object.assign({}, state, { isLoading: true });
+            return Object.assign({}, state, { isLoading: true, isLoadingState: action.payload.state });
         
         case allActions.CREATE_SUCCESS:
             if (action.payload.state !== undefined) {
-                stateChange = { isLoading: false };
+                stateChange = { isLoading: false, isLoadingState: '' };
                 stateChange[action.payload.state] = action.payload.data;
                 return Object.assign({}, state, stateChange);
             } else {
@@ -30,14 +30,14 @@ export function appReducer(state = initialState, action: allActions.Actions): Ap
             }
         
         case allActions.CREATE_FAILURE:
-            return Object.assign({}, state, { isLoading: false, error: action.payload.data });
+            return Object.assign({}, state, { isLoading: false, isLoadingState: '', error: action.payload.data });
         
         case allActions.READ:
-            return Object.assign({}, state, { isLoading: true });
+            return Object.assign({}, state, { isLoading: true, isLoadingState: action.payload.state });
         
         case allActions.READ_SUCCESS:
             if (action.payload.state !== undefined) {
-                stateChange = { isLoading: false };
+                stateChange = { isLoading: false, isLoadingState: '' };
                 stateChange[action.payload.state] = action.payload.data;
                 return Object.assign({}, state, stateChange);
             } else {
@@ -45,14 +45,14 @@ export function appReducer(state = initialState, action: allActions.Actions): Ap
             }
         
         case allActions.READ_FAILURE:
-            return Object.assign({}, state, { isLoading: false, error: action.payload.data });
+            return Object.assign({}, state, { isLoading: false, isLoadingState: '', error: action.payload.data });
         
         case allActions.UPDATE:
-            return Object.assign({}, state, { isLoading: true });
+            return Object.assign({}, state, { isLoading: true, isLoadingState: action.payload.state });
         
         case allActions.UPDATE_SUCCESS:
             if (action.payload.state !== undefined) {
-                stateChange = { isLoading: false };
+                stateChange = { isLoading: false, isLoadingState: '' };
                 stateChange[action.payload.state] = action.payload.data;
                 return Object.assign({}, state, stateChange);
             } else {
@@ -60,14 +60,14 @@ export function appReducer(state = initialState, action: allActions.Actions): Ap
             }
         
         case allActions.UPDATE_FAILURE:
-            return Object.assign({}, state, { isLoading: false, error: action.payload.data });
+            return Object.assign({}, state, { isLoading: false, isLoadingState: '', error: action.payload.data });
         
         case allActions.DELETE:
-            return Object.assign({}, state, { isLoading: true });
+            return Object.assign({}, state, { isLoading: true, isLoadingState: action.payload.state });
         
         case allActions.DELETE_SUCCESS:
             if (action.payload.state !== undefined) {
-                stateChange = { isLoading: false };
+                stateChange = { isLoading: false, isLoadingState: '' };
                 stateChange[action.payload.state] = action.payload.data;
                 return Object.assign({}, state, stateChange);
             } else {
@@ -75,7 +75,7 @@ export function appReducer(state = initialState, action: allActions.Actions): Ap
             }
         
         case allActions.DELETE_FAILURE:
-            return Object.assign({}, state, { isLoading: false, error: action.payload.data });
+            return Object.assign({}, state, { isLoading: false, isLoadingState: '', error: action.payload.data });
         
         
         case allActions.SET:

@@ -23,6 +23,12 @@ export const selectIsLoading = createSelector(
         return state.isLoading;
     });
 
+export const selectIsLoadingState = createSelector(
+    selectAppState,
+    (state: AppState) => {
+        return state.isLoadingState;
+    });
+
 export const selectError = createSelector(
     selectAppState,
     (state: AppState) => {

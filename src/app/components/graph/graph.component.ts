@@ -1,17 +1,15 @@
 import { Component, OnInit, ViewChild, ElementRef, HostListener, Output, EventEmitter, Input } from '@angular/core';
-import { Observable, of } from 'rxjs';
 import SpriteText from 'three-spritetext';
-import { UnrealBloomPass } from '../../../../node_modules/three/examples/jsm/postprocessing/UnrealBloomPass.js';
+import { UnrealBloomPass } from 'three/examples/jsm/postprocessing/UnrealBloomPass.js';
+import {VRButton} from 'three/examples/jsm/webxr/VRButton';
 import { MeshBasicMaterial, SphereGeometry, Mesh, Vector2 } from 'three';
 import { Store } from '@ngrx/store';
-import { State, ISearchResult} from '../../redux/state';
+import { State } from '../../redux/state';
 import * as AppSelectors from '../../redux/selectors';
 import { filter, distinctUntilChanged, map } from 'rxjs/operators';
 import { Read, Set as SetStoreValue } from 'src/app/redux/actions.js';
 
 declare var ForceGraph3D;
-declare var ForceGraphVR;
-declare var ForceGraphAR;
 
 @Component({
   selector: 'app-graph',
@@ -30,10 +28,16 @@ export class GraphComponent implements OnInit {
 
   @Output() graphClicked: EventEmitter<any> = new EventEmitter();
   @Input() width;
+
+  threeScene: any;
+  threeRenderer: any;
+  threeControls: any;
+  threeCamera: any;
+
+  loading$;
+  loadingState$;
   
-  constructor(private store: Store<State>) {
-    
-  }
+  constructor(private store: Store<State>) {}
 
   ngOnInit() {
     this.canvasHeight = window.innerHeight - 128;
@@ -46,6 +50,9 @@ export class GraphComponent implements OnInit {
         this.initializeGraph();
       }
     );
+
+    this.loading$ = this.store.select(AppSelectors.selectIsLoading)
+    this.loadingState$ = this.store.select(AppSelectors.selectIsLoadingState)
 
     this.store.select(AppSelectors.selectUX)
       .pipe(map(x => x.sidebar))
@@ -65,23 +72,10 @@ export class GraphComponent implements OnInit {
   }
 
   initializeGraph() {
-    // switch(this.mode){
-    //   case '3D':
-    //     this.Graph = ForceGraph3D();
-    //   case 'VR':
-    //     this.Graph = ForceGraphVR();
-    //   case 'AR':
-    //     console.log('AR mode')
-    //     this.Graph = ForceGraphAR();
-    //   default:
-    //     this.Graph = ForceGraph3D();
-    // }
     let highlightNodes = new Set();
     let highlightLinks = new Set();
     this.Graph = ForceGraph3D();
     this.Graph(this.graph.nativeElement)
-      // .linkDirectionalParticleColor(() => 'red')
-      // .linkDirectionalParticleWidth(4)
       .linkWidth(link => highlightLinks.has(link) ? 4 : 1)
       .linkDirectionalParticles(link => highlightLinks.has(link) ? 4 : 0)
       .linkDirectionalParticleWidth(4)
@@ -122,6 +116,13 @@ export class GraphComponent implements OnInit {
     // this.Graph.onLinkClick(this.Graph.emitParticle); // emit particles on link click
     this.Graph.onNodeClick(this.onNodeClick.bind(this));
     this.Graph.onLinkClick(this.onLinkClick.bind(this));
+
+    this.threeScene = this.Graph.scene();
+    this.threeRenderer = this.Graph.renderer();
+    this.threeControls = this.Graph.controls();
+    this.threeCamera = this.Graph.camera();
+
+    this.initXR()
   }
 
   @HostListener('window:resize', ['$event'])
@@ -150,15 +151,6 @@ export class GraphComponent implements OnInit {
       .linkDirectionalParticles(this.Graph.linkDirectionalParticles());
   }
 
-  // emitParticles(){
-  //   [...Array(10).keys()].forEach(() => {
-  //     const link = this.gData.links[Math.floor(Math.random() * this.gData.links.length)];
-  //     this.Graph.emitParticle(link);      
-  //   });
-  //   const modalRef = this.modalService.open(NgbdModalContent);
-  //   modalRef.componentInstance.type = 'node';
-  // }
-
   postProcessing(){
     const strength = 0.7;
     const radius = 0.2;
@@ -170,7 +162,7 @@ export class GraphComponent implements OnInit {
   onGraphClick(event){
     switch(event.type){
       case 'node':
-        
+        // no use-case yet
         break;
 
       case 'edge':
@@ -192,6 +184,14 @@ export class GraphComponent implements OnInit {
       default:
         break;
     }
+  }
+
+  initXR(){
+    this.threeRenderer.xr.enabled = true;
+    document.body.appendChild(VRButton.createButton(this.threeRenderer));
+    this.threeRenderer.setAnimationLoop(() => {
+      this.threeRenderer.render(this.threeScene, this.threeCamera)
+    });
   }
 
 }
