@@ -19,6 +19,12 @@
   background-color: #263238;
 }
 
+#graphContainer{
+  width: 100%;
+  min-width: 100%;
+  overflow: hidden;
+}
+
 // loading
 .lds-roller {
   display: inline-block;
