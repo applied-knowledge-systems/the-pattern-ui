@@ -26,6 +26,8 @@ import { NgxSliderModule } from '@angular-slider/ngx-slider'
 import { CarouselModule } from 'ngx-owl-carousel-o';
 import { SearchFormComponent } from './components/search-form/search-form.component';
 import { AudioComponent } from './components/audio/audio.component';
+import { NodePopupComponent } from './components/node-popup/node-popup.component';
+import { EdgePopupComponent } from './components/edge-popup/edge-popup.component';
 
 @NgModule({
   declarations: [
@@ -36,7 +38,9 @@ import { AudioComponent } from './components/audio/audio.component';
     GraphComponent,
     SliderComponent,
     SearchFormComponent,
-    AudioComponent
+    AudioComponent,
+    NodePopupComponent,
+    EdgePopupComponent
   ],
   imports: [
     BrowserModule,
