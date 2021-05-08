@@ -69,3 +69,9 @@ export const selectSearchYears = createSelector(
         return state.searchYears
     });
 
+export const selectAudioEnabled = createSelector(
+    selectAppState,
+    (state: AppState) => {
+        return state.audioEnabled
+    });
+
