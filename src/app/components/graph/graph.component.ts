@@ -174,15 +174,16 @@ export class GraphComponent implements OnInit {
           state: 'edgeResults',
           route: `edge/edges:${event.data.source.id}:${event.data.target.id}`
         }));
-        this.store.dispatch(new SetStoreValue({
-          data: true,
-          state: 'sidebar'
-        }));
+        // this.store.dispatch(new SetStoreValue({
+        //   data: true,
+        //   state: 'sidebar'
+        // }));
 
         this.store.dispatch(new SetStoreValue({
           data: event.data,
           state: 'selected'
         }));
+        this.showEdgeDetails()
         break;
 
       default:
@@ -199,11 +200,11 @@ export class GraphComponent implements OnInit {
   }
 
   showNodeDetails() {
-    const modalRef = this.modalService.open(NodePopupComponent);
+    const modalRef = this.modalService.open(NodePopupComponent, { size: 'xl', scrollable: true });
   }
 
   showEdgeDetails() {
-    const modalRef = this.modalService.open(EdgePopupComponent);
+    const modalRef = this.modalService.open(EdgePopupComponent, { size: 'xl', scrollable: true });
   }
 
 }

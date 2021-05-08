@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { Store } from '@ngrx/store';
+import { distinctUntilChanged, filter } from 'rxjs/operators';
 import * as AppSelectors from '../../redux/selectors';
 import {State} from '../../redux/state';
 
@@ -13,6 +14,7 @@ export class EdgePopupComponent implements OnInit {
   edgeData$: any;
   loading$;
   loadingState$;
+  selected: any;
 
   constructor(
     public activeModal: NgbActiveModal,
@@ -22,6 +24,14 @@ export class EdgePopupComponent implements OnInit {
     this.edgeData$ = this.store.select(AppSelectors.selectEdgeResults);
     this.loading$ = this.store.select(AppSelectors.selectIsLoading)
     this.loadingState$ = this.store.select(AppSelectors.selectIsLoadingState);
+
+    this.store.select(AppSelectors.selectedEvent)
+      .pipe(distinctUntilChanged())
+      .pipe(filter(x => x!=null))
+      .subscribe(selected => {
+        this.selected = selected;
+      }
+    );
   }
 
 }
