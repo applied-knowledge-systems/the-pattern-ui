@@ -39,7 +39,7 @@ export class SidebarComponent implements OnInit {
 
     this.edgeData$ = this.store.select(AppSelectors.selectEdgeResults);
     this.loading$ = this.store.select(AppSelectors.selectIsLoading)
-    this.loadingState$ = this.store.select(AppSelectors.selectIsLoadingState)
+    this.loadingState$ = this.store.select(AppSelectors.selectIsLoadingState);
   }
 
   closeSidebar() {
