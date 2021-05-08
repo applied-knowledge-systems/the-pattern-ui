@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { Store } from '@ngrx/store';
 import * as AppSelectors from '../../redux/selectors';
 import {State} from '../../redux/state';
@@ -13,7 +14,9 @@ export class EdgePopupComponent implements OnInit {
   loading$;
   loadingState$;
 
-  constructor(private store: Store<State>) { }
+  constructor(
+    public activeModal: NgbActiveModal,
+    private store: Store<State>) { }
 
   ngOnInit(): void {
     this.edgeData$ = this.store.select(AppSelectors.selectEdgeResults);

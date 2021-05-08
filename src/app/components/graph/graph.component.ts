@@ -9,6 +9,8 @@ import * as AppSelectors from '../../redux/selectors';
 import { filter, distinctUntilChanged, map } from 'rxjs/operators';
 import { Read, Set as SetStoreValue } from 'src/app/redux/actions.js';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { EdgePopupComponent } from '../edge-popup/edge-popup.component';
+import { NodePopupComponent } from '../node-popup/node-popup.component';
 
 declare var ForceGraph3D;
 
@@ -164,6 +166,7 @@ export class GraphComponent implements OnInit {
     switch(event.type){
       case 'node':
         // no use-case yet
+        this.showNodeDetails()
         break;
 
       case 'edge':
@@ -195,12 +198,12 @@ export class GraphComponent implements OnInit {
     });
   }
 
-  showNodeDetails(content) {
-    this.modalService.open(content, {ariaLabelledBy: 'modal-basic-title'}).result.then((result) => {
-      // this.closeResult = `Closed with: ${result}`;
-    }, (reason) => {
-      // this.closeResult = `Dismissed ${this.getDismissReason(reason)}`;
-    });
+  showNodeDetails() {
+    const modalRef = this.modalService.open(NodePopupComponent);
+  }
+
+  showEdgeDetails() {
+    const modalRef = this.modalService.open(EdgePopupComponent);
   }
 
 }
