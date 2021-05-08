@@ -8,6 +8,7 @@ import { State } from '../../redux/state';
 import * as AppSelectors from '../../redux/selectors';
 import { filter, distinctUntilChanged, map } from 'rxjs/operators';
 import { Read, Set as SetStoreValue } from 'src/app/redux/actions.js';
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 
 declare var ForceGraph3D;
 
@@ -37,7 +38,7 @@ export class GraphComponent implements OnInit {
   loading$;
   loadingState$;
   
-  constructor(private store: Store<State>) {}
+  constructor(private store: Store<State>, private modalService: NgbModal) {}
 
   ngOnInit() {
     this.canvasHeight = window.innerHeight - 128;
@@ -191,6 +192,14 @@ export class GraphComponent implements OnInit {
     document.body.appendChild(VRButton.createButton(this.threeRenderer));
     this.threeRenderer.setAnimationLoop(() => {
       this.threeRenderer.render(this.threeScene, this.threeCamera)
+    });
+  }
+
+  showNodeDetails(content) {
+    this.modalService.open(content, {ariaLabelledBy: 'modal-basic-title'}).result.then((result) => {
+      // this.closeResult = `Closed with: ${result}`;
+    }, (reason) => {
+      // this.closeResult = `Dismissed ${this.getDismissReason(reason)}`;
     });
   }
 
