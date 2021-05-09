@@ -5,7 +5,7 @@ import {State} from '../../redux/state';
 import * as AppSelectors from '../../redux/selectors';
 import { distinctUntilChanged, filter } from 'rxjs/operators';
 import { Read } from 'src/app/redux/actions';
-
+import { LocalStorageService } from '../../app.service';
 @Component({
   selector: 'app-node-popup',
   templateUrl: './node-popup.component.html',
@@ -15,8 +15,9 @@ export class NodePopupComponent implements OnInit {
   node: any;
   constructor(
     public activeModal: NgbActiveModal,
+    private localStorageService: LocalStorageService,
     private store: Store<State>
-  ) { 
+  ) {
     this.store.select(AppSelectors.selectedNode)
       .pipe(distinctUntilChanged())
       .pipe(filter(x => x!=null))
@@ -28,14 +29,14 @@ export class NodePopupComponent implements OnInit {
   }
 
   ngOnInit(): void {
+
   }
 
   notImportant(){
-    // this.store.dispatch(new Read({
-    //   state: 'nodeResults',
-    //   route: `nodeid/important`
-    // }));
-    this.activeModal.close()
+    console.log("Node Results");
+    console.log("Node "+this.node.id)
+    this.localStorageService.storeOnLocalStorage(this.node.id);
+     this.activeModal.close()
   }
 
 }
