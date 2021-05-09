@@ -5,9 +5,9 @@
     </button>
 </div>
 <div class="modal-body">
-    <p>Some content</p>
+    <p>{{ node | json }}</p>
 </div>
 <div class="modal-footer">
-    <!-- <button type="button" class="btn btn-outline-dark" (click)="modal.close('Save click')">Mark as not
-        important</button> -->
+    <button type="button" class="btn btn-outline-dark" (click)="notImportant()"><i class="fa fa-thumbs-down"></i>Mark as not
+        important</button>
 </div>

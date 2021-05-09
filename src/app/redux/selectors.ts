@@ -47,6 +47,12 @@ export const selectedEvent = createSelector(
         return state.selected;
     });
 
+export const selectedNode = createSelector(
+    selectAppState,
+    (state: AppState) => {
+        return state.selectedNode;
+    });
+
 export const selectUX = createSelector(
     selectAppState,
     (state: AppState) => {

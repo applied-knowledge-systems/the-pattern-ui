@@ -165,7 +165,10 @@ export class GraphComponent implements OnInit {
   onGraphClick(event){
     switch(event.type){
       case 'node':
-        // no use-case yet
+        this.store.dispatch(new SetStoreValue({
+          data: event.data,
+          state: 'selectedNode'
+        }));
         this.showNodeDetails()
         break;
 

@@ -33,6 +33,7 @@ export interface AppState {
     mobile: boolean;
     sidebar: boolean;
     selected: any;
+    selectedNode: any;
     audioEnabled: boolean;
 }
 
@@ -49,6 +50,7 @@ export const initialState: AppState = {
     mobile: false,
     sidebar: null,
     selected: null,
+    selectedNode: null,
     audioEnabled: false
 };
 
