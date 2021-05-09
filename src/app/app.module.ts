@@ -28,6 +28,7 @@ import { SearchFormComponent } from './components/search-form/search-form.compon
 import { AudioComponent } from './components/audio/audio.component';
 import { NodePopupComponent } from './components/node-popup/node-popup.component';
 import { EdgePopupComponent } from './components/edge-popup/edge-popup.component';
+import { RolesComponent } from './components/roles/roles.component';
 
 @NgModule({
   declarations: [
@@ -40,7 +41,8 @@ import { EdgePopupComponent } from './components/edge-popup/edge-popup.component
     SearchFormComponent,
     AudioComponent,
     NodePopupComponent,
-    EdgePopupComponent
+    EdgePopupComponent,
+    RolesComponent
   ],
   imports: [
     BrowserModule,
