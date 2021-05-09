@@ -2,3 +2,4 @@
     <input type="checkbox" class="form-check-input " id="audioEnable" formControl="enable">
     <label class="form-check-label" for="audioEnable">Enable audio</label>
 </div>
+<a *ngIf="mode == 'player'" class="audio-player" (click)="playAudio()"><i class="fa fa-volume-up"></i></a>

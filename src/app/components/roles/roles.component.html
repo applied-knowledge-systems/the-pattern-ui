@@ -1,1 +1,6 @@
-<p>roles works!</p>
+<div ngbDropdown class="d-inline-block" mode="inline-add">
+    <a class="" id="dropdownBasic1" ngbDropdownToggle>Add to role</a>
+    <div ngbDropdownMenu aria-labelledby="dropdownBasic1">
+      <button ngbDropdownItem *ngFor="let role of roles">{{role}}</button>
+    </div>
+</div>

@@ -200,7 +200,7 @@ export class GraphComponent implements OnInit {
   }
 
   showNodeDetails() {
-    const modalRef = this.modalService.open(NodePopupComponent, { size: 'xl', scrollable: true });
+    const modalRef = this.modalService.open(NodePopupComponent, { size: 'sm', scrollable: true });
   }
 
   showEdgeDetails() {
