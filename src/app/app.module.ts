@@ -25,7 +25,7 @@ import { NgxSliderModule } from '@angular-slider/ngx-slider'
 
 import { CarouselModule } from 'ngx-owl-carousel-o';
 import { SearchFormComponent } from './components/search-form/search-form.component';
-import { AudioComponent } from './components/audio/audio.component';
+import { AudioComponent, AudioService } from './components/audio/audio.component';
 import { NodePopupComponent } from './components/node-popup/node-popup.component';
 import { EdgePopupComponent } from './components/edge-popup/edge-popup.component';
 import { RolesComponent } from './components/roles/roles.component';
@@ -68,7 +68,8 @@ import { RolesComponent } from './components/roles/roles.component';
   ],
   providers: [
     // AppService,
-    DataService
+    DataService,
+    AudioService
   ],
   bootstrap: [AppComponent]
 })

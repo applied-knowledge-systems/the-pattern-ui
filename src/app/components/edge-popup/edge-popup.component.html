@@ -18,7 +18,7 @@
             <span class="title">{{ result.title }}</span>  <br/>
             <span class="sentence">{{ result.sentence }}</span> <br/>
             <app-roles mode='inline-add'></app-roles>
-            <app-audio mode='player' class="audio-player"></app-audio>
+            <app-audio mode='player' class="audio-player" [text]="result.sentence"></app-audio>
         </li>
     </ul>
 </div>
