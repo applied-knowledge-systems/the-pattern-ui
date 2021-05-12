@@ -40,7 +40,7 @@ export class AppService {
   // searchSocket: WebSocketSubject<any> = webSocket(environment.redisUrl + '/search');
   // graphSocket: WebSocketSubject<any> = webSocket(environment.redisUrl + '/graph');
 
-  searchUri = 'http://api.thepattern.digital/search'
+  searchUri = 'https://api.thepattern.digital/search'
 
   graphData$: Observable<any>;
   searchData$: Observable<any>;
@@ -75,7 +75,7 @@ export class AppService {
   }
 
   edgeApi(source: string, target: string): Observable<any>{
-    const edgeUri= `http://api.thepattern.digital/edge/edges:${source}:${target}`
+    const edgeUri= `https://api.thepattern.digital/edge/edges:${source}:${target}`
     return this.http.get<any>(edgeUri).pipe(map((data) => {
       return data.results;
     }));
