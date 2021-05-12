@@ -40,7 +40,7 @@ export class AppService {
   // searchSocket: WebSocketSubject<any> = webSocket(environment.redisUrl + '/search');
   // graphSocket: WebSocketSubject<any> = webSocket(environment.redisUrl + '/graph');
 
-  searchUri = 'https://api.thepattern.digital/search'
+
 
   graphData$: Observable<any>;
   searchData$: Observable<any>;
@@ -68,15 +68,32 @@ export class AppService {
   // }
 
   searchApi(text: string): Observable<ISearchResult>{
-    return this.http.post<any>(this.searchUri, { search: text }).pipe(map((data) => {
+    const searchUri = environment.redisUrl+'/search'
+    return this.http.post<any>(searchUri, { search: text }).pipe(map((data) => {
+      console.log(data)
+      return data.search_result;
+    }));
+  }
+
+  QAsearchApi(text: string): Observable<ISearchResult>{
+    const searchUri = environment.redisUrl+'/qasearch'
+    return this.http.post<any>(searchUri, { search: text }).pipe(map((data) => {
       console.log(data)
       return data.search_result;
     }));
   }
 
   edgeApi(source: string, target: string): Observable<any>{
-    const edgeUri= `https://api.thepattern.digital/edge/edges:${source}:${target}`
+    const edgeUri= environment.redisUrl+`/edge/edges:${source}:${target}`
     return this.http.get<any>(edgeUri).pipe(map((data) => {
+      return data.results;
+    }));
+  }
+  excludeNode(nodeID: string): Observable<any>{
+    const excludeUri= environment.redisUrl+`/exclude?id=${nodeID}`
+    console.log(excludeUri)
+    return this.http.get<any>(excludeUri).pipe(map((data) => {
+      console.log(data)
       return data.results;
     }));
   }
