@@ -11,6 +11,9 @@ import { Read, Set as SetStoreValue } from 'src/app/redux/actions.js';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { EdgePopupComponent } from '../edge-popup/edge-popup.component';
 import { NodePopupComponent } from '../node-popup/node-popup.component';
+import { EffectComposer } from 'three/examples/jsm/postprocessing/EffectComposer';
+import { RenderPass } from 'three/examples/jsm/postprocessing/RenderPass';
+import * as THREE from 'three';
 
 declare var ForceGraph3D;
 
@@ -120,6 +123,8 @@ export class GraphComponent implements OnInit {
     this.Graph.onNodeClick(this.onNodeClick.bind(this));
     this.Graph.onLinkClick(this.onLinkClick.bind(this));
 
+    this.postProcessing();
+
     this.threeScene = this.Graph.scene();
     this.threeRenderer = this.Graph.renderer();
     this.threeControls = this.Graph.controls();
@@ -155,10 +160,19 @@ export class GraphComponent implements OnInit {
   }
 
   postProcessing(){
-    const strength = 0.7;
-    const radius = 0.2;
-    const threshold = 0;
-    const bloomPass = new UnrealBloomPass(new Vector2(128, 128), strength, radius, threshold);
+    const bloomPass = new UnrealBloomPass(
+      new THREE.Vector2(window.innerWidth, window.innerHeight),
+      1.5,
+      0.4,
+      0.85
+    );
+    bloomPass.threshold = 0;
+    bloomPass.strength = 5;
+    bloomPass.radius = 0;
+    // const strength = 0.7;
+    // const radius = 0.2;
+    // const threshold = 0;
+    // const bloomPass = new UnrealBloomPass(new Vector2(128, 128), strength, radius, threshold);
     this.Graph.postProcessingComposer().addPass(bloomPass);
   }
 

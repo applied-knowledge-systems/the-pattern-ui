@@ -33,7 +33,7 @@ export class NodePopupComponent implements OnInit {
   notImportant(){
     // this.store.dispatch(new Read({
     //   state: 'nodeResults',
-    //   route: `nodeid/important`
+    //   route: `exclude/node_id`
     // }));
     this.activeModal.close()
   }

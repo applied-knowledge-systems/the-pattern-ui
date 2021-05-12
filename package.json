@@ -38,6 +38,7 @@
     "rxjs": "~6.6.3",
     "speak-tts": "^2.0.8",
     "three": "^0.125.1",
+    "three-mesh-ui": "^4.6.1",
     "three-spritetext": "^1.5.4",
     "tslib": "^1.10.0",
     "zone.js": "~0.10.2"
