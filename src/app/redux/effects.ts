@@ -10,7 +10,7 @@ import { NotificationsService } from 'angular2-notifications';
 import { DataService } from '../services/data.service';
 import { Store } from '@ngrx/store';
 import { State } from './state';
-
+import { SearchFormComponent } from '../components/search-form/search-form.component';
 @Injectable()
 export class AppEffects {
     @Effect() create$;
@@ -65,9 +65,9 @@ export class AppEffects {
                             const max = years.reduce((p, v) => ( p > v ? p : v ));
                             const mid = Math.ceil(years.length / 2);
                             const median = years.length % 2 == 0 ? (years[mid] + years[mid - 1]) / 2 : years[mid - 1];
-                            
+
                             this.store.dispatch(new AppActions.Set({
-                                data: { 
+                                data: {
                                     min: min,
                                     max: max,
                                     median: median,
@@ -75,8 +75,21 @@ export class AppEffects {
                                 },
                                 state: 'searchYears'
                             }))
-                            break;      
-                            
+                            break;
+                        case 'notImportant':
+                          // create search request
+                          let searchterm=action.payload.data.term;
+                          console.log("Post-processing node");
+                          console.log(searchterm);
+                          this.store.dispatch(new AppActions.Set({
+                            data: { search: searchterm},
+                            state: 'searchResults',
+                            postProcess: 'map:years',
+                            route: 'search',
+                            navigateTo: { route: 'search', query: { q: searchterm }}
+                          }));
+                          break;
+
                         default:
                             break;
                     }
@@ -138,7 +151,7 @@ export class AppEffects {
                 if(action.payload.navigate){
                     this.router.navigate([action.payload.navigateTo.route], { queryParams: action.payload.navigateTo.query});
                 }
-                
+
             })
         );
 

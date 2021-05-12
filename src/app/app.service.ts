@@ -69,7 +69,7 @@ export class AppService {
 
   searchApi(text: string): Observable<ISearchResult>{
     const searchUri = environment.redisUrl+'/search'
-    return this.http.post<any>(searchUri, { search: text }).pipe(map((data) => {
+    return this.http.post<any>(searchUri, { search: text, withCredentials: true },).pipe(map((data) => {
       console.log(data)
       return data.search_result;
     }));
@@ -85,14 +85,14 @@ export class AppService {
 
   edgeApi(source: string, target: string): Observable<any>{
     const edgeUri= environment.redisUrl+`/edge/edges:${source}:${target}`
-    return this.http.get<any>(edgeUri).pipe(map((data) => {
+    return this.http.get<any>(edgeUri,{withCredentials: true }).pipe(map((data) => {
       return data.results;
     }));
   }
   excludeNode(nodeID: string): Observable<any>{
     const excludeUri= environment.redisUrl+`/exclude?id=${nodeID}`
     console.log(excludeUri)
-    return this.http.get<any>(excludeUri).pipe(map((data) => {
+    return this.http.get<any>(excludeUri,{withCredentials: true }).pipe(map((data) => {
       console.log(data)
       return data.results;
     }));
