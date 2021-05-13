@@ -17,6 +17,12 @@ export const selectEdgeResults = createSelector(
         return state.edgeResults;
     });
 
+export const selectQAResults = createSelector(
+  selectAppState,
+  (state: AppState) => {
+      return state.answerResults;
+  });
+
 export const selectIsLoading = createSelector(
     selectAppState,
     (state: AppState) => {

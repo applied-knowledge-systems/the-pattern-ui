@@ -1,0 +1,18 @@
+
+
+<p>nurse-view works!
+  {{ term }}
+</p>
+
+<div class="modal-body">
+
+  <ul class="content">
+      <li *ngFor="let result of (QAResults$ )?.results">
+          <span class="title">{{ result.title }}</span>  <br/>
+          <span class="sentence">{{ result.sentence }}</span> <br/>
+          <span class="summary">QA Answer: {{ result.answer }}</span> <br/>
+          <app-roles mode='inline-add'></app-roles>
+          <app-audio mode='player' class="audio-player" [text]="result.sentence"></app-audio>
+      </li>
+  </ul>
+</div>
