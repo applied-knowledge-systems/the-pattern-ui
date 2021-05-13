@@ -6,7 +6,6 @@ import { AppComponent, NgbdModalContent } from './app.component';
 import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
 import { ReactiveFormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
-import { AppService } from './app.service';
 import { LocalStorageService } from './app.service';
 import { landingPageComponent } from './components/landing-page/landing-page.component';
 import { SidebarComponent } from './components/sidebar/sidebar.component';
@@ -76,6 +75,6 @@ import { NurseViewComponent } from './components/nurse-view/nurse-view.component
     AudioService,
     LocalStorageService
   ],
-  bootstrap: [AppComponent]
+  bootstrap: [ AppComponent ]
 })
 export class AppModule { }
