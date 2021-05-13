@@ -177,10 +177,6 @@ export class GraphComponent implements OnInit {
           state: 'edgeResults',
           route: `edge/edges:${event.data.source.id}:${event.data.target.id}`
         }));
-        // this.store.dispatch(new SetStoreValue({
-        //   data: true,
-        //   state: 'sidebar'
-        // }));
 
         this.store.dispatch(new SetStoreValue({
           data: event.data,

@@ -4,8 +4,7 @@ import { Store } from '@ngrx/store';
 import {State} from '../../redux/state';
 import * as AppSelectors from '../../redux/selectors';
 import { distinctUntilChanged, filter } from 'rxjs/operators';
-import { Create, Read, Set as SetStoreValue} from 'src/app/redux/actions';
-import { AppService} from '../../app.service';
+import { Read } from 'src/app/redux/actions';
 @Component({
   selector: 'app-node-popup',
   templateUrl: './node-popup.component.html',
@@ -17,7 +16,6 @@ export class NodePopupComponent implements OnInit {
   term:any;
   constructor(
     public activeModal: NgbActiveModal,
-    private service: AppService,
     private store: Store<State>
   ) {
     this.store.select(AppSelectors.selectedNode)
@@ -30,39 +28,18 @@ export class NodePopupComponent implements OnInit {
   }
 
   ngOnInit(): void {
-
+    this.store.select(AppSelectors.selectSearchTerm).subscribe(term => {
+      this.term=term;
+    });
   }
 
   notImportant(){
-    console.log("Node Results");
-    console.log("Node "+this.node.id)
-
-    this.store.select(AppSelectors.selectSearchTerm).subscribe(term => {
-      console.log(term)
-      this.term=term;
-    });
-
-    // this.service.excludeNode(this.node.id).subscribe(resp => {
-    //   console.log(resp);
-    // });
-
-    // request
+    // request for node results
      this.store.dispatch(new Read({
           route: 'exclude?id='+this.node.id,
           state: `excludeNode`,
           postProcess:'notImportant'
      }));
-
-
-
-    console.log("Call to mark node finished "+this.node.id);
-    // this.store.dispatch(new Create({
-    //   data: { search: this.term.value },
-    //   state: 'searchResults',
-    //   postProcess: 'map:years',
-    //   route: 'search',
-    //   navigateTo: { route: 'search', query: { q: this.term.value }}
-    // }));
     this.activeModal.close()
   }
 

@@ -1,9 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Store } from '@ngrx/store';
 import {State} from '../../redux/state';
-import { Create, Read, Set as SetStoreValue} from 'src/app/redux/actions';
-import { filter, distinctUntilChanged, map } from 'rxjs/operators';
-import { AppService} from '../../app.service';
+import { Create} from 'src/app/redux/actions';
 import * as AppSelectors from '../../redux/selectors';
 
 @Component({
@@ -15,7 +13,6 @@ export class NurseViewComponent implements OnInit {
   term:any;
   QAResults$: any;
   constructor(
-    private service: AppService,
     private store: Store<State>
   ) {
     this.store.select(AppSelectors.selectSearchTerm).subscribe(term => {
@@ -36,9 +33,7 @@ export class NurseViewComponent implements OnInit {
 
     this.QAResults$ = this.store.select<any>(AppSelectors.selectQAResults).subscribe((results) => {
       this.QAResults$=results;
-      console.log(this.QAResults$)
     });
-    console.log("Check QA results");
 
   }
 

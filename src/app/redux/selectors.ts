@@ -1,8 +1,7 @@
-import { createSelector, createFeatureSelector } from '@ngrx/store';
+import { createSelector } from '@ngrx/store';
 
 import { AppState, State } from './state';
 // selectors
-// export const selectAppState = createFeatureSelector<AppState>('app');
 export const selectAppState = (state: State) => state.app;
 
 export const selectSearchResults = createSelector(
@@ -86,4 +85,13 @@ export const selectAudioEnabled = createSelector(
     (state: AppState) => {
         return state.audioEnabled
     });
+
+export const selectAnswerResults = createSelector(
+    selectAppState,
+    (state: AppState) => {
+        return state.answerResults
+    });
+
+
+    
 

@@ -36,6 +36,10 @@ export class AppEffects {
         private notify: NotificationsService,
         private store: Store<State>
     ) {
+        this.store.select(AppSelectors.selectSearchTerm).subscribe(term => {
+            this.term=term;
+        });
+
         this.create$ = this.actions$.pipe(
             ofType(AppActions.CREATE),
             mergeMap((action: AppActions.Create) =>
@@ -76,8 +80,6 @@ export class AppEffects {
                                 state: 'searchYears'
                             }))
                             break;
-
-
                         default:
                             break;
                     }
@@ -114,13 +116,8 @@ export class AppEffects {
                   switch(action.payload.postProcess){
                     case 'notImportant':
                       // create search request
-                      this.store.select(AppSelectors.selectSearchTerm).subscribe(term => {
-                        console.log(term)
-                        this.term=term;
-                      });
-
+                      // @todo add year filter from url in rest call 
                       console.log("Post-processing node");
-                      console.log(this.term);
                       this.store.dispatch(new AppActions.Create({
                         data: { search: this.term},
                         state: 'searchResults',

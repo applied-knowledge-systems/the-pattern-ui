@@ -13,6 +13,7 @@
   },
   "private": true,
   "dependencies": {
+    "3d-force-graph": "^1.67.8",
     "@angular-slider/ngx-slider": "^2.0.3",
     "@angular/animations": "~9.1.13",
     "@angular/common": "~9.1.13",
@@ -28,7 +29,6 @@
     "@ngrx/effects": "^8.6.1",
     "@ngrx/store": "^8.6.1",
     "@ngrx/store-devtools": "^8.6.1",
-    "3d-force-graph": "^1.67.8",
     "angular2-notifications": "^9.0.0",
     "bootstrap": "^4.6.0",
     "express-ws": "^4.0.0",
