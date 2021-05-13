@@ -56,22 +56,6 @@ export class GraphComponent implements OnInit {
 
     this.loading$ = this.store.select(AppSelectors.selectIsLoading)
     this.loadingState$ = this.store.select(AppSelectors.selectIsLoadingState)
-
-    this.store.select(AppSelectors.selectUX)
-      .pipe(map(x => x.sidebar))
-      .pipe(distinctUntilChanged())
-      .pipe(filter(x => x!=null))
-      .subscribe(open => {
-        console.log(open)
-        if(open){
-          this.canvasWidth = window.innerWidth - 320;
-        }else{
-          this.canvasWidth = window.innerWidth;
-        }
-        
-        this.Graph.width(this.canvasWidth)
-      }
-    );
   }
 
   initializeGraph() {
