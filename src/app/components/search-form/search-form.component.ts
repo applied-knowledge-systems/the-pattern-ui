@@ -47,7 +47,10 @@ export class SearchFormComponent implements OnInit {
 
     route.queryParams.pipe(filter(x => x['q'] !== null)).subscribe(x => {
       this.term.setValue(x['q']);
-      this.search();
+      if(x['q'] !== null){
+        this.search();
+      }
+      
     })
 
     store.select(AppSelectors.selectActiveRole).pipe(filter(x => x!== null)).subscribe(role => {
@@ -58,10 +61,15 @@ export class SearchFormComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.store.select<any>(AppSelectors.selectAnswerResults).subscribe((results) => {
+    this.store.select<any>(AppSelectors.selectAnswerResults).subscribe((data) => {
       if(this.audioService.audioEnabled){
         console.log('play audio');
-        console.log(results)
+        const answer = data.results[0].answer
+        if(answer == null  || answer == undefined){
+          this.audioService.playAudio("Sorry, I don't know the answer to your question")
+        }else{
+          this.audioService.playAudio(answer)
+        }
       }
       else{
         console.log("don't play audio");
@@ -83,21 +91,25 @@ export class SearchFormComponent implements OnInit {
 
       // create qa search request
       this.store.dispatch(new Create({
-        data: { search: this.term},
+        data: { search: this.term.value },
         state: 'answerResults',
         route: 'qasearch'
       }));
 
+      if(this.audioService.audioEnabled){
+        this.audioService.playAudio('Please wait as I retrieve an answer')
+      }      
+
       // set search term
       this.store.dispatch(new Set({
-        data: this.searchForm.get('term').value,
+        data: this.term.value,
         state: 'searchTerm'
       }));
     }
   }
 
   sampleSearch(term){
-    this.searchForm.setValue(term);
+    this.term.setValue(term);
     this.search()
   }
 }

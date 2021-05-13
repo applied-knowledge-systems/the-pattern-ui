@@ -31,6 +31,8 @@ export class GraphComponent implements OnInit {
 
   @Output() graphClicked: EventEmitter<any> = new EventEmitter();
   @Input() width;
+  @Input() renderer: string
+  @Input() controller: string
 
   threeScene: any;
   threeRenderer: any;

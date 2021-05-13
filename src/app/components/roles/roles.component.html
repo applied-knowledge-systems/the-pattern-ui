@@ -16,7 +16,10 @@
       </div>
   </div>
 </nav>
-<app-graph *ngIf="mode=='3d-viewer'"></app-graph>
+<app-graph 
+  *ngIf="mode=='3d-viewer'"
+  [renderer] = "roles[selectedRoleId].threeView"
+  [controller] = "roles[selectedRoleId].controller"></app-graph>
 <section  *ngIf="mode=='role-selector'">
   <ul>
     <li *ngFor="let role of roles; let i = index">

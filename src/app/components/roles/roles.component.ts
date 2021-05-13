@@ -30,7 +30,7 @@ export class RolesComponent implements OnInit {
     },
   ];
 
-  selectedRole: string;
+  selectedRole: any = null;
   selectedRoleId: number;
 
   constructor(
