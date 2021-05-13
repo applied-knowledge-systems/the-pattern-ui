@@ -32,7 +32,6 @@ export interface AppState {
     answerResults: IEdge[];
     toolBarStyle: string;
     mobile: boolean;
-    sidebar: boolean;
     selected: any;
     selectedNode: any;
     audioEnabled: boolean;
@@ -50,7 +49,6 @@ export const initialState: AppState = {
     answerResults: [],
     toolBarStyle: 'dark',
     mobile: false,
-    sidebar: null,
     selected: null,
     selectedNode: null,
     audioEnabled: false

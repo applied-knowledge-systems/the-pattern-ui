@@ -8,7 +8,6 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
 import { LocalStorageService } from './app.service';
 import { landingPageComponent } from './components/landing-page/landing-page.component';
-import { SidebarComponent } from './components/sidebar/sidebar.component';
 import { GraphComponent } from './components/graph/graph.component';
 import { DataService } from './services/data.service';
 import { StoreModule } from '@ngrx/store';
@@ -36,7 +35,6 @@ import { NurseViewComponent } from './components/nurse-view/nurse-view.component
     AppComponent,
     NgbdModalContent,
     landingPageComponent,
-    SidebarComponent,
     GraphComponent,
     SliderComponent,
     SearchFormComponent,

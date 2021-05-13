@@ -64,7 +64,6 @@ export const selectUX = createSelector(
         return {
             toolBarStyle: state.toolBarStyle,
             mobile: state.mobile,
-            sidebar: state.sidebar
         };
     });
 
