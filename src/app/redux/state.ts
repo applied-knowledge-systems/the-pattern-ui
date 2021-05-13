@@ -35,6 +35,7 @@ export interface AppState {
     selected: any;
     selectedNode: any;
     audioEnabled: boolean;
+    activeRole: any;
 }
 
 export const initialState: AppState = {
@@ -51,7 +52,8 @@ export const initialState: AppState = {
     mobile: false,
     selected: null,
     selectedNode: null,
-    audioEnabled: false
+    audioEnabled: false,
+    activeRole: null
 };
 
 export interface State {

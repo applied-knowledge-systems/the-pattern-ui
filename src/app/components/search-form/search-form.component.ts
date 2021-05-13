@@ -18,6 +18,7 @@ export class SearchFormComponent implements OnInit {
   @Input() mode: string;
   searchForm: FormGroup;
   currentRoute: String;
+  roleUri: string
   
   get term() { return this.searchForm.get('term'); }
 
@@ -49,6 +50,10 @@ export class SearchFormComponent implements OnInit {
       this.search();
     })
 
+    store.select(AppSelectors.selectActiveRole).pipe(filter(x => x!== null)).subscribe(role => {
+      this.roleUri = `/view/${role.uri}/${role.id};` || '/start'
+    })
+
 
   }
 
@@ -57,7 +62,8 @@ export class SearchFormComponent implements OnInit {
       if(this.audioService.audioEnabled){
         console.log('play audio');
         console.log(results)
-      }else{
+      }
+      else{
         console.log("don't play audio");
       }
     });
@@ -72,7 +78,7 @@ export class SearchFormComponent implements OnInit {
         state: 'searchResults',
         postProcess: 'map:years', 
         route: 'search',
-        navigateTo: { route: 'search', query: { q: this.term.value }}
+        navigateTo: { route: this.roleUri, query: { q: this.term.value }}
       }));
 
       // create qa search request
@@ -88,5 +94,10 @@ export class SearchFormComponent implements OnInit {
         state: 'searchTerm'
       }));
     }
+  }
+
+  sampleSearch(term){
+    this.searchForm.setValue(term);
+    this.search()
   }
 }

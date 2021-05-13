@@ -56,6 +56,10 @@ export class RolesComponent implements OnInit {
   ngOnInit(): void {}
 
   selectRole(id: number) {
+    this.store.dispatch(new Set({
+      data: this.roles[id],
+      state: 'activeRole'
+    }))
     this.router.navigate([`/view/${this.roles[id].uri}/${id}`]);
   }
 }

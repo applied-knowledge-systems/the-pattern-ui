@@ -90,7 +90,13 @@ export const selectAnswerResults = createSelector(
     (state: AppState) => {
         return state.answerResults
     });
-
+    
+export const selectActiveRole = createSelector(
+    selectAppState,
+    (state: AppState) => {
+        return state.activeRole
+    });
+    
 
     
 
