@@ -40,6 +40,7 @@ export interface IRead {
         route: string,
         query?: any
     };
+    postProcess?: string;
 }
 
 export interface IReadSuccess {
@@ -52,6 +53,8 @@ export interface IReadSuccess {
         route: string,
         query?: any
     };
+    postProcess?: string;
+    postProcessStatus?: boolean
 }
 
 export interface IReadFailure {
@@ -141,7 +144,7 @@ export interface IAuthSuccess {
         profile: any;
         teams: any[];
         verified: boolean;
-    },    
+    },
     navigate?: boolean;
     navigateTo?: {
         route: string,
