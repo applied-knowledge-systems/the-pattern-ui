@@ -5,7 +5,7 @@ import {State} from '../../redux/state';
 import * as AppSelectors from '../../redux/selectors';
 import { distinctUntilChanged, filter } from 'rxjs/operators';
 import { Create, Read, Set as SetStoreValue} from 'src/app/redux/actions';
-import { LocalStorageService, AppService} from '../../app.service';
+import { AppService} from '../../app.service';
 @Component({
   selector: 'app-node-popup',
   templateUrl: './node-popup.component.html',
