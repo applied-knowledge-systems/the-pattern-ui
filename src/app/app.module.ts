@@ -28,7 +28,6 @@ import { AudioComponent, AudioService } from './components/audio/audio.component
 import { NodePopupComponent } from './components/node-popup/node-popup.component';
 import { EdgePopupComponent } from './components/edge-popup/edge-popup.component';
 import { RolesComponent } from './components/roles/roles.component';
-import { NurseViewComponent } from './components/nurse-view/nurse-view.component';
 
 @NgModule({
   declarations: [
@@ -41,8 +40,7 @@ import { NurseViewComponent } from './components/nurse-view/nurse-view.component
     AudioComponent,
     NodePopupComponent,
     EdgePopupComponent,
-    RolesComponent,
-    NurseViewComponent
+    RolesComponent
   ],
   imports: [
     BrowserModule,

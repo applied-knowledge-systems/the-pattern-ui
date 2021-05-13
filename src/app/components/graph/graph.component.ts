@@ -48,6 +48,7 @@ export class GraphComponent implements OnInit {
     this.store.select<any>(AppSelectors.selectSearchResults)
       .pipe(filter(x => x!=null))
       .subscribe((results) => {
+        console.log(results)
         this.emptySearch = false;
         this.gData = results;
         this.initializeGraph();

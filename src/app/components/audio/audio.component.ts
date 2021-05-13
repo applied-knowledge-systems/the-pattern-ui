@@ -48,7 +48,13 @@ export class AudioService {
   constructor(private store: Store<State>){
     store.select(AppSelectors.selectAudioEnabled).subscribe(status => {
       this.audioEnabled = status;
-    })
+
+      if(status){
+        this.initAudio();
+      }else{
+        this.destroyAudio();
+      }
+    });
   }
 
   initAudio() {

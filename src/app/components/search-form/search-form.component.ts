@@ -5,6 +5,8 @@ import { Store } from '@ngrx/store';
 import { filter } from 'rxjs/operators';
 import { Create, Set } from 'src/app/redux/actions';
 import { State } from 'src/app/redux/state';
+import * as AppSelectors from 'src/app/redux/selectors';
+import { AudioService } from '../audio/audio.component';
 
 @Component({
   selector: 'app-search-form',
@@ -15,6 +17,8 @@ export class SearchFormComponent implements OnInit {
 
   @Input() mode: string;
   searchForm: FormGroup;
+  currentRoute: String;
+  
   get term() { return this.searchForm.get('term'); }
 
   samples = [
@@ -31,7 +35,11 @@ export class SearchFormComponent implements OnInit {
   ]
   
 
-  constructor(private store: Store<State>, fb: FormBuilder, route: ActivatedRoute) {
+  constructor(
+    private store: Store<State>, 
+    fb: FormBuilder, route: ActivatedRoute,
+    private audioService: AudioService
+  ) {
     this.searchForm = fb.group({
       'term': ['', Validators.required]
     });
@@ -40,9 +48,19 @@ export class SearchFormComponent implements OnInit {
       this.term.setValue(x['q']);
       this.search();
     })
+
+
   }
 
   ngOnInit() {
+    this.store.select<any>(AppSelectors.selectAnswerResults).subscribe((results) => {
+      if(this.audioService.audioEnabled){
+        console.log('play audio');
+        console.log(results)
+      }else{
+        console.log("don't play audio");
+      }
+    });
   }
 
   search(){
@@ -55,6 +73,13 @@ export class SearchFormComponent implements OnInit {
         postProcess: 'map:years', 
         route: 'search',
         navigateTo: { route: 'search', query: { q: this.term.value }}
+      }));
+
+      // create qa search request
+      this.store.dispatch(new Create({
+        data: { search: this.term},
+        state: 'answerResults',
+        route: 'qasearch'
       }));
 
       // set search term
