@@ -11,9 +11,9 @@ import { Read, Set as SetStoreValue } from 'src/app/redux/actions.js';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { EdgePopupComponent } from '../edge-popup/edge-popup.component';
 import { NodePopupComponent } from '../node-popup/node-popup.component';
-import { EffectComposer } from 'three/examples/jsm/postprocessing/EffectComposer';
-import { RenderPass } from 'three/examples/jsm/postprocessing/RenderPass';
+import { BoxLineGeometry } from 'three/examples/jsm/geometries/BoxLineGeometry.js';
 import * as THREE from 'three';
+import ThreeMeshUI from 'three-mesh-ui';
 
 declare var ForceGraph3D;
 
@@ -117,18 +117,18 @@ export class GraphComponent implements OnInit {
       .backgroundColor('#37474f')
       .height(this.canvasHeight)
       .width(this.canvasWidth)
-      .graphData(this.gData);
+      // .graphData(this.gData);
 
-    // this.Graph.onLinkClick(this.Graph.emitParticle); // emit particles on link click
     this.Graph.onNodeClick(this.onNodeClick.bind(this));
     this.Graph.onLinkClick(this.onLinkClick.bind(this));
-
-    this.postProcessing();
 
     this.threeScene = this.Graph.scene();
     this.threeRenderer = this.Graph.renderer();
     this.threeControls = this.Graph.controls();
     this.threeCamera = this.Graph.camera();
+
+    this.addEdgeDetailsContainer();
+    // this.postProcessing();
 
     this.initXR()
   }
@@ -212,7 +212,8 @@ export class GraphComponent implements OnInit {
     this.threeRenderer.xr.enabled = true;
     document.body.appendChild(VRButton.createButton(this.threeRenderer));
     this.threeRenderer.setAnimationLoop(() => {
-      this.threeRenderer.render(this.threeScene, this.threeCamera)
+      ThreeMeshUI.update();
+      this.threeRenderer.render(this.threeScene, this.threeCamera);
     });
   }
 
@@ -222,6 +223,36 @@ export class GraphComponent implements OnInit {
 
   showEdgeDetails() {
     const modalRef = this.modalService.open(EdgePopupComponent, { size: 'xl', scrollable: true });
+  }
+
+  addEdgeDetailsContainer(){
+    console.log('edge')
+    const container = new ThreeMeshUI.Block({
+      width: 1.2,
+      height: 0.7,
+      padding: 0.2,
+      fontFamily: '../../../assets/Roboto-msdf.json',
+      fontTexture: '.../../../assets/Roboto-msdf.png',
+     });
+
+    const text = new ThreeMeshUI.Text({
+      content: "Some text to be displayed"
+    });
+
+    container.position.set( 0, 1, -1.8 );
+    container.rotation.x = 0;
+     
+    container.add( text );
+    this.threeScene.add( container );
+  }
+
+  addRoomToScence(){
+    // const room = new THREE.LineSegments(
+    //   new BoxLineGeometry( 6, 6, 6, 10, 10, 10 ).translate( 0, 3, 0 ),
+    //   new THREE.LineBasicMaterial( { color: 0x808080 } )
+    // );
+  
+    // this.threeScene.add( room );
   }
 
 }
