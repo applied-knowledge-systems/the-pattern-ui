@@ -16,7 +16,8 @@
     <ul class="content">
         <li *ngFor="let result of (edgeData$ | async)?.results">
             <span class="title">{{ result.title }}</span>  <br/>
-            <span class="sentence">{{ result.sentence }}</span> <br/>
+            <!-- <span class="sentence">{{ result.sentence }}</span> <br/> -->
+            <span class="summary">Summary by T5: {{ result.summary }}</span> <br/>
             <app-roles mode='inline-add'></app-roles>
             <app-audio mode='player' class="audio-player" [text]="result.sentence"></app-audio>
         </li>

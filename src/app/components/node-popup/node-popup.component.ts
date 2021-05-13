@@ -24,7 +24,6 @@ export class NodePopupComponent implements OnInit {
       .pipe(distinctUntilChanged())
       .pipe(filter(x => x!=null))
       .subscribe(node => {
-        console.log(node)
         this.node = node;
       }
     );

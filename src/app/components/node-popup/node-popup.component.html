@@ -5,7 +5,12 @@
     </button>
 </div>
 <div class="modal-body">
-    <p>{{ node | json }}</p>
+    <ul class="content">
+      <li >
+          <span class="title">{{ node.name }} {{ node.id }}</span>  <br/>
+      </li>
+  </ul>
+
 </div>
 <div class="modal-footer">
     <button type="button" class="btn btn-outline-dark" (click)="notImportant()"><i class="fa fa-thumbs-down"></i>Mark as not

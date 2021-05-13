@@ -10,7 +10,7 @@ import { NotificationsService } from 'angular2-notifications';
 import { DataService } from '../services/data.service';
 import { Store } from '@ngrx/store';
 import { State } from './state';
-import { SearchFormComponent } from '../components/search-form/search-form.component';
+import * as AppSelectors from '../redux/selectors';
 @Injectable()
 export class AppEffects {
     @Effect() create$;
@@ -28,7 +28,7 @@ export class AppEffects {
     @Effect() delete$;
     @Effect({ dispatch: false }) deleteSuccess$;
     @Effect({ dispatch: false }) deleteFailed$;
-
+    term:any;
     constructor(
         private actions$: Actions,
         private router: Router,
@@ -76,19 +76,7 @@ export class AppEffects {
                                 state: 'searchYears'
                             }))
                             break;
-                        case 'notImportant':
-                          // create search request
-                          let searchterm=action.payload.data.term;
-                          console.log("Post-processing node");
-                          console.log(searchterm);
-                          this.store.dispatch(new AppActions.Set({
-                            data: { search: searchterm},
-                            state: 'searchResults',
-                            postProcess: 'map:years',
-                            route: 'search',
-                            navigateTo: { route: 'search', query: { q: searchterm }}
-                          }));
-                          break;
+
 
                         default:
                             break;
@@ -121,6 +109,29 @@ export class AppEffects {
                 if(action.payload.navigate){
                     this.router.navigate([action.payload.navigateTo.route], { queryParams: action.payload.navigateTo.query });
                 }
+
+                if(action.payload.postProcessStatus){
+                  switch(action.payload.postProcess){
+                    case 'notImportant':
+                      // create search request
+                      this.store.select(AppSelectors.selectSearchTerm).subscribe(term => {
+                        console.log(term)
+                        this.term=term;
+                      });
+
+                      console.log("Post-processing node");
+                      console.log(this.term);
+                      this.store.dispatch(new AppActions.Create({
+                        data: { search: this.term},
+                        state: 'searchResults',
+                        postProcess: 'map:years',
+                        route: 'search',
+                        navigateTo: { route: 'search', query: { q: this.term }}
+                      }));
+
+                  }
+                }
+
             })
         );
 
