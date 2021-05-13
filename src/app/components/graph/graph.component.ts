@@ -42,7 +42,9 @@ export class GraphComponent implements OnInit {
   loading$;
   loadingState$;
   
-  constructor(private store: Store<State>, private modalService: NgbModal) {}
+  constructor(private store: Store<State>, private modalService: NgbModal) {
+    
+  }
 
   ngOnInit() {
     this.canvasHeight = window.innerHeight - 128;
@@ -178,11 +180,14 @@ export class GraphComponent implements OnInit {
   }
 
   initXR(){
-    this.threeRenderer.xr.enabled = true;
-    document.body.appendChild(VRButton.createButton(this.threeRenderer));
-    this.threeRenderer.setAnimationLoop(() => {
-      this.threeRenderer.render(this.threeScene, this.threeCamera)
-    });
+    if(this.renderer == 'XR'){
+      this.threeRenderer.xr.enabled = true;
+      document.body.appendChild(VRButton.createButton(this.threeRenderer));
+      this.threeRenderer.setAnimationLoop(() => {
+        this.threeRenderer.render(this.threeScene, this.threeCamera)
+      });
+    }
+    
   }
 
   showNodeDetails() {

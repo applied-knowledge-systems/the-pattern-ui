@@ -18,20 +18,23 @@ export class RolesComponent implements OnInit {
       label: "Nurse",
       uri: "nurse",
       audioEnabled: true,
-      threeView: '3D', // 3D, VR
+      threeView: '3D', // 3D, XR
       controller: 'LeapMotionCtrl' // LeapMotionCtrl, VRCtrcl, TrackballCtrl
     },
     {
       label: "Medical student",
       uri: "medical-student",
       audioEnabled: false,
-      threeView: 'VR', // 3D, VR
+      threeView: 'XR', // 3D, XR
       controller: 'VRCtrcl'
     },
   ];
 
   selectedRole: any = null;
   selectedRoleId: number;
+  selected3DView: string;
+  selectedController: string;
+
 
   constructor(
     route: ActivatedRoute, 
@@ -40,7 +43,8 @@ export class RolesComponent implements OnInit {
     route.params.pipe(filter((x) => x["role"] !== undefined )).subscribe((params) => {
       this.selectedRole = params["role"];
       this.selectedRoleId = parseInt(params["id"]);
-      console.log(this.selectedRoleId)
+      this.selectedController = this.roles[this.selectedRoleId].controller
+      this.selected3DView = this.roles[this.selectedRoleId].threeView
       this.store.dispatch(new Set({
         data: this.roles[this.selectedRoleId].audioEnabled,
         state: 'audioEnabled'

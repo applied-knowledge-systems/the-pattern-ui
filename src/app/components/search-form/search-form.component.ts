@@ -63,12 +63,11 @@ export class SearchFormComponent implements OnInit {
   ngOnInit() {
     this.store.select<any>(AppSelectors.selectAnswerResults).subscribe((data) => {
       if(this.audioService.audioEnabled){
-        console.log('play audio');
-        const answer = data.results[0].answer
-        if(answer == null  || answer == undefined){
-          this.audioService.playAudio("Sorry, I don't know the answer to your question")
+        console.log('play audio: ' + data);
+        if(data.results!==null && data.results.length>0 && data.results[0].answer != null && data.results[0].answer != undefined){
+          this.audioService.playAudio(data.results[0].answer)
         }else{
-          this.audioService.playAudio(answer)
+          this.audioService.playAudio("Sorry, I don't know the answer to your question")
         }
       }
       else{
