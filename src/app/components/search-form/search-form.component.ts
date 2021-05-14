@@ -2,7 +2,7 @@ import { Component, Input, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 import { Store } from '@ngrx/store';
-import { filter } from 'rxjs/operators';
+import { distinctUntilChanged, filter } from 'rxjs/operators';
 import { Create, Set } from 'src/app/redux/actions';
 import { State } from 'src/app/redux/state';
 import * as AppSelectors from 'src/app/redux/selectors';
@@ -18,7 +18,7 @@ export class SearchFormComponent implements OnInit {
   @Input() mode: string;
   searchForm: FormGroup;
   currentRoute: String;
-  roleUri: string
+  roleUri = ''
   
   get term() { return this.searchForm.get('term'); }
 
@@ -45,39 +45,39 @@ export class SearchFormComponent implements OnInit {
       'term': ['', Validators.required]
     });
 
-    route.queryParams.pipe(filter(x => x['q'] !== null)).subscribe(x => {
+    route.queryParams.pipe(filter(x => x['q'] !== undefined)).subscribe(x => {
       this.term.setValue(x['q']);
-      if(x['q'] !== null){
-        this.search();
-      }
-      
+      this.search();      
     })
-
-    store.select(AppSelectors.selectActiveRole).pipe(filter(x => x!== null)).subscribe(role => {
-      this.roleUri = `/view/${role.uri}/${role.id};` || '/start'
+    
+    route.params.pipe().subscribe(params => {
+      this.roleUri = `/view/${params.role}/${params.id}`;  
     })
-
-
   }
 
   ngOnInit() {
-    this.store.select<any>(AppSelectors.selectAnswerResults).subscribe((data) => {
-      if(this.audioService.audioEnabled){
-        console.log('play audio: ' + data);
-        if(data.results!==null && data.results.length>0 && data.results[0].answer != null && data.results[0].answer != undefined){
-          this.audioService.playAudio(data.results[0].answer)
-        }else{
-          this.audioService.playAudio("Sorry, I don't know the answer to your question")
+    this.store.select<any>(AppSelectors.selectAnswerResults).pipe(
+      filter(x => x.results!== undefined),
+      filter(x => x.results.length>0),
+      distinctUntilChanged() ).subscribe((data) => {
+        if(this.audioService.audioEnabled){
+          console.log('play audio');
+          if(data.results!==undefined  && data.results[0].answer != undefined && data.results[0].answer != undefined){
+            this.audioService.addToQueue(data.results[0].answer)
+          }else{
+            this.audioService.addToQueue("Sorry, I don't know the answer to your question")
+          }
+        }
+        else{
+          console.log("don't play audio");
         }
       }
-      else{
-        console.log("don't play audio");
-      }
-    });
+    );
   }
 
   search(){
     if(this.searchForm.valid){
+      console.log(this.roleUri)
 
       // create search request
       this.store.dispatch(new Create({
@@ -96,7 +96,7 @@ export class SearchFormComponent implements OnInit {
       }));
 
       if(this.audioService.audioEnabled){
-        this.audioService.playAudio('Please wait as I retrieve an answer')
+        this.audioService.addToQueue('Please wait as I retrieve an answer')
       }      
 
       // set search term
