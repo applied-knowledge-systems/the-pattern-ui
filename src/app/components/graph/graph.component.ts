@@ -34,6 +34,8 @@ export class GraphComponent implements OnInit {
 
   @Output() graphClicked: EventEmitter<any> = new EventEmitter();
   @Input() width;
+  @Input() renderer: string
+  @Input() controller: string
 
   threeScene: any;
   threeRenderer: any;
@@ -43,14 +45,16 @@ export class GraphComponent implements OnInit {
   loading$;
   loadingState$;
   
-  constructor(private store: Store<State>, private modalService: NgbModal) {}
+  constructor(private store: Store<State>, private modalService: NgbModal) { }
 
   ngOnInit() {
     this.canvasHeight = window.innerHeight - 128;
     this.canvasWidth = window.innerWidth;
     this.store.select<any>(AppSelectors.selectSearchResults)
-      .pipe(filter(x => x!=null))
-      .subscribe((results) => {
+      .pipe(
+        filter(x => x!=null),
+        distinctUntilChanged()
+      ).subscribe((results) => {
         this.emptySearch = false;
         this.gData = results;
         this.initializeGraph();
@@ -59,22 +63,6 @@ export class GraphComponent implements OnInit {
 
     this.loading$ = this.store.select(AppSelectors.selectIsLoading)
     this.loadingState$ = this.store.select(AppSelectors.selectIsLoadingState)
-
-    this.store.select(AppSelectors.selectUX)
-      .pipe(map(x => x.sidebar))
-      .pipe(distinctUntilChanged())
-      .pipe(filter(x => x!=null))
-      .subscribe(open => {
-        console.log(open)
-        if(open){
-          this.canvasWidth = window.innerWidth - 320;
-        }else{
-          this.canvasWidth = window.innerWidth;
-        }
-        
-        this.Graph.width(this.canvasWidth)
-      }
-    );
   }
 
   initializeGraph() {
@@ -191,10 +179,6 @@ export class GraphComponent implements OnInit {
           state: 'edgeResults',
           route: `edge/edges:${event.data.source.id}:${event.data.target.id}`
         }));
-        // this.store.dispatch(new SetStoreValue({
-        //   data: true,
-        //   state: 'sidebar'
-        // }));
 
         this.store.dispatch(new SetStoreValue({
           data: event.data,
@@ -209,12 +193,14 @@ export class GraphComponent implements OnInit {
   }
 
   initXR(){
-    this.threeRenderer.xr.enabled = true;
-    document.body.appendChild(VRButton.createButton(this.threeRenderer));
-    this.threeRenderer.setAnimationLoop(() => {
-      ThreeMeshUI.update();
-      this.threeRenderer.render(this.threeScene, this.threeCamera);
-    });
+    if(this.renderer == 'XR'){
+      this.threeRenderer.xr.enabled = true;
+      document.body.appendChild(VRButton.createButton(this.threeRenderer));
+      this.threeRenderer.setAnimationLoop(() => {
+        this.threeRenderer.render(this.threeScene, this.threeCamera)
+      });
+    }
+    
   }
 
   showNodeDetails() {

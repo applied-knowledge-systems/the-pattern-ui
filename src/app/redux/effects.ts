@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 import { Effect, Actions, ofType } from '@ngrx/effects';
 import { of, } from 'rxjs';
-import { tap, map, catchError, mergeMap } from 'rxjs/operators';
+import { tap, map, catchError, mergeMap, filter } from 'rxjs/operators';
 
 import * as AppActions from './actions';
 import { ICreateSuccess, IReadSuccess, IUpdateSuccess, IDeleteSuccess, IAuthSuccess, ISignupSuccess } from './interfaces';
@@ -10,7 +10,7 @@ import { NotificationsService } from 'angular2-notifications';
 import { DataService } from '../services/data.service';
 import { Store } from '@ngrx/store';
 import { State } from './state';
-
+import * as AppSelectors from '../redux/selectors';
 @Injectable()
 export class AppEffects {
     @Effect() create$;
@@ -28,7 +28,8 @@ export class AppEffects {
     @Effect() delete$;
     @Effect({ dispatch: false }) deleteSuccess$;
     @Effect({ dispatch: false }) deleteFailed$;
-
+    term:any;
+    roleUri = '';
     constructor(
         private actions$: Actions,
         private router: Router,
@@ -36,6 +37,14 @@ export class AppEffects {
         private notify: NotificationsService,
         private store: Store<State>
     ) {
+        this.store.select(AppSelectors.selectSearchTerm).subscribe(term => {
+            this.term=term;
+        });
+
+        this.store.select(AppSelectors.selectActiveRole).pipe(filter(x => x!= null)).subscribe(role => {
+            this.roleUri=`/view/${role.uri}/${role.id}`;
+        });
+
         this.create$ = this.actions$.pipe(
             ofType(AppActions.CREATE),
             mergeMap((action: AppActions.Create) =>
@@ -61,13 +70,20 @@ export class AppEffects {
                     switch(action.payload.postProcess){
                         case 'map:years':
                             let years = action.payload.data.years.sort();
-                            const min = years.reduce((p, v) =>  ( p < v ? p : v ));
-                            const max = years.reduce((p, v) => ( p > v ? p : v ));
-                            const mid = Math.ceil(years.length / 2);
-                            const median = years.length % 2 == 0 ? (years[mid] + years[mid - 1]) / 2 : years[mid - 1];
-                            
+                            let min = null;
+                            let max = null;
+                            let mid = null;
+                            let median = null;
+
+                            if(years.length > 0){
+                                min = years.reduce((p, v) =>  ( p < v ? p : v ));
+                                max = years.reduce((p, v) => ( p > v ? p : v ));
+                                mid = Math.ceil(years.length / 2);
+                                median = years.length % 2 == 0 ? (years[mid] + years[mid - 1]) / 2 : years[mid - 1];
+                            }
+
                             this.store.dispatch(new AppActions.Set({
-                                data: { 
+                                data: {
                                     min: min,
                                     max: max,
                                     median: median,
@@ -75,8 +91,7 @@ export class AppEffects {
                                 },
                                 state: 'searchYears'
                             }))
-                            break;      
-                            
+                            break;
                         default:
                             break;
                     }
@@ -108,6 +123,24 @@ export class AppEffects {
                 if(action.payload.navigate){
                     this.router.navigate([action.payload.navigateTo.route], { queryParams: action.payload.navigateTo.query });
                 }
+
+                if(action.payload.postProcessStatus){
+                  switch(action.payload.postProcess){
+                    case 'notImportant':
+                      // create search request
+                      // @todo add year filter from url in rest call 
+                      console.log("Post-processing node");
+                      this.store.dispatch(new AppActions.Create({
+                        data: { search: this.term},
+                        state: 'searchResults',
+                        postProcess: 'map:years',
+                        route: 'search',
+                        navigateTo: { route: this.roleUri, query: { q: this.term }}
+                      }));
+
+                  }
+                }
+
             })
         );
 
@@ -138,7 +171,7 @@ export class AppEffects {
                 if(action.payload.navigate){
                     this.router.navigate([action.payload.navigateTo.route], { queryParams: action.payload.navigateTo.query});
                 }
-                
+
             })
         );
 

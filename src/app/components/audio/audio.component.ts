@@ -1,7 +1,7 @@
 import { Component, Injectable, Input, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { Store } from '@ngrx/store';
-import { Observable } from 'rxjs';
+import { Observable, Subject } from 'rxjs';
 import { Set } from 'src/app/redux/actions';
 import { State } from 'src/app/redux/state';
 import * as AppSelectors from '../../redux/selectors';
@@ -34,7 +34,7 @@ export class AudioComponent implements OnInit {
   }
 
   playAudio() {
-    this.audioService.playAudio(this.text);
+    this.audioService.addToQueue(this.text);
   }
 }
 
@@ -43,12 +43,20 @@ export class AudioComponent implements OnInit {
 })
 export class AudioService {
   audioEnabled = false;
-  speechCtrl: any;
+  audioPlaying= false;
+  private speechCtrl: any;
+  private messageQueue= [];
 
   constructor(private store: Store<State>){
     store.select(AppSelectors.selectAudioEnabled).subscribe(status => {
       this.audioEnabled = status;
-    })
+
+      if(status){
+        this.initAudio();
+      }else{
+        this.destroyAudio();
+      }
+    });
   }
 
   initAudio() {
@@ -64,7 +72,7 @@ export class AudioService {
           'splitSentences': true
         }).then((data) => {
             // The "data" object contains the list of available voices and the voice synthesis params
-            console.log("Speech is ready, voices are available", data)
+            console.log("Speech is ready, voices are available")
             this.changeAudioEnabledStatus(true)
         }).catch(e => {
             console.error("An error occured while initializing : ", e)
@@ -93,7 +101,7 @@ export class AudioService {
     }));
   }
 
-  playAudio(text) {
+  private textToSpeech(text) {
     if(this.audioEnabled){
       this.speechCtrl.speak({
         text: text,
@@ -101,11 +109,15 @@ export class AudioService {
         listeners: {
             onstart: () => {
               // change audio controls using css
-              console.log("Start utterance")
+              console.log("Start utterance");
+              this.audioPlaying = true;
             },
             onend: () => {
               // change audio controls using css
-              console.log("End utterance")
+              console.log("End utterance");
+              this.audioPlaying = false;
+              this.messageQueue.splice(0, 1);
+              this.playTextFromQueue();
             },
             onresume: () => {
               // change audio controls using css
@@ -136,5 +148,16 @@ export class AudioService {
 
   cancelAudio(){
     this.speechCtrl.cancel()
+  }
+
+  addToQueue(text: string) {
+    this.messageQueue.push(text);
+    this.playTextFromQueue()
+  }
+
+  playTextFromQueue(){
+    if(this.audioPlaying == false && this.messageQueue.length > 0){
+      this.textToSpeech(this.messageQueue[0]);
+    }
   }
 }

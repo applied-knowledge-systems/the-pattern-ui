@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { Store } from '@ngrx/store';
+import { Observable } from 'rxjs';
 import { distinctUntilChanged, filter } from 'rxjs/operators';
 import * as AppSelectors from '../../redux/selectors';
 import {State} from '../../redux/state';
@@ -11,7 +12,7 @@ import {State} from '../../redux/state';
   styleUrls: ['./edge-popup.component.scss']
 })
 export class EdgePopupComponent implements OnInit {
-  edgeData$: any;
+  edgeData$: Observable<any>;
   loading$;
   loadingState$;
   selected: any;

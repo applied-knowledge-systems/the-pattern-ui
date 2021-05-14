@@ -5,7 +5,6 @@ import {State} from '../../redux/state';
 import * as AppSelectors from '../../redux/selectors';
 import { distinctUntilChanged, filter } from 'rxjs/operators';
 import { Read } from 'src/app/redux/actions';
-
 @Component({
   selector: 'app-node-popup',
   templateUrl: './node-popup.component.html',
@@ -13,28 +12,34 @@ import { Read } from 'src/app/redux/actions';
 })
 export class NodePopupComponent implements OnInit {
   node: any;
+  nodeResults$: any;
+  term:any;
   constructor(
     public activeModal: NgbActiveModal,
     private store: Store<State>
-  ) { 
+  ) {
     this.store.select(AppSelectors.selectedNode)
       .pipe(distinctUntilChanged())
       .pipe(filter(x => x!=null))
       .subscribe(node => {
-        console.log(node)
         this.node = node;
       }
     );
   }
 
   ngOnInit(): void {
+    this.store.select(AppSelectors.selectSearchTerm).subscribe(term => {
+      this.term=term;
+    });
   }
 
   notImportant(){
-    // this.store.dispatch(new Read({
-    //   state: 'nodeResults',
-    //   route: `exclude/node_id`
-    // }));
+    // request for node results
+     this.store.dispatch(new Read({
+          route: 'exclude?id='+this.node.id,
+          state: `excludeNode`,
+          postProcess:'notImportant'
+     }));
     this.activeModal.close()
   }
 

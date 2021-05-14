@@ -1,8 +1,7 @@
-import { createSelector, createFeatureSelector } from '@ngrx/store';
+import { createSelector } from '@ngrx/store';
 
 import { AppState, State } from './state';
 // selectors
-// export const selectAppState = createFeatureSelector<AppState>('app');
 export const selectAppState = (state: State) => state.app;
 
 export const selectSearchResults = createSelector(
@@ -16,6 +15,12 @@ export const selectEdgeResults = createSelector(
     (state: AppState) => {
         return state.edgeResults;
     });
+
+export const selectQAResults = createSelector(
+  selectAppState,
+  (state: AppState) => {
+      return state.answerResults;
+  });
 
 export const selectIsLoading = createSelector(
     selectAppState,
@@ -59,7 +64,6 @@ export const selectUX = createSelector(
         return {
             toolBarStyle: state.toolBarStyle,
             mobile: state.mobile,
-            sidebar: state.sidebar
         };
     });
 
@@ -80,4 +84,19 @@ export const selectAudioEnabled = createSelector(
     (state: AppState) => {
         return state.audioEnabled
     });
+
+export const selectAnswerResults = createSelector(
+    selectAppState,
+    (state: AppState) => {
+        return state.answerResults
+    });
+    
+export const selectActiveRole = createSelector(
+    selectAppState,
+    (state: AppState) => {
+        return state.activeRole
+    });
+    
+
+    
 
