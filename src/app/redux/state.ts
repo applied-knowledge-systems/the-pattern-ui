@@ -29,12 +29,13 @@ export interface AppState {
     searchYears: any;
     edgeResults: IEdge[];
     nodeResults: any;
+    answerResults: IEdge[];
     toolBarStyle: string;
     mobile: boolean;
-    sidebar: boolean;
     selected: any;
     selectedNode: any;
     audioEnabled: boolean;
+    activeRole: any;
 }
 
 export const initialState: AppState = {
@@ -46,12 +47,13 @@ export const initialState: AppState = {
     searchYears: null,
     edgeResults: [],
     nodeResults: null,
+    answerResults: [],
     toolBarStyle: 'dark',
     mobile: false,
-    sidebar: null,
     selected: null,
     selectedNode: null,
-    audioEnabled: false
+    audioEnabled: false,
+    activeRole: null
 };
 
 export interface State {

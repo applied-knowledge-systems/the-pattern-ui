@@ -1,14 +1,13 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
-
+import { StorageServiceModule } from 'ngx-webstorage-service';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent, NgbdModalContent } from './app.component';
 import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
 import { ReactiveFormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
-import { AppService } from './app.service';
+import { LocalStorageService } from './app.service';
 import { landingPageComponent } from './components/landing-page/landing-page.component';
-import { SidebarComponent } from './components/sidebar/sidebar.component';
 import { GraphComponent } from './components/graph/graph.component';
 import { DataService } from './services/data.service';
 import { StoreModule } from '@ngrx/store';
@@ -35,7 +34,6 @@ import { RolesComponent } from './components/roles/roles.component';
     AppComponent,
     NgbdModalContent,
     landingPageComponent,
-    SidebarComponent,
     GraphComponent,
     SliderComponent,
     SearchFormComponent,
@@ -50,10 +48,11 @@ import { RolesComponent } from './components/roles/roles.component';
     NgbModule,
     ReactiveFormsModule,
     HttpClientModule,
+    StorageServiceModule,
     StoreModule.forRoot(
       AppReducers.reducers,
-      // { 
-      //   metaReducers: [offlineMetaReducer] 
+      // {
+      //   metaReducers: [offlineMetaReducer]
       // }
     ),
     StoreDevtoolsModule.instrument({
@@ -69,8 +68,9 @@ import { RolesComponent } from './components/roles/roles.component';
   providers: [
     // AppService,
     DataService,
-    AudioService
+    AudioService,
+    LocalStorageService
   ],
-  bootstrap: [AppComponent]
+  bootstrap: [ AppComponent ]
 })
 export class AppModule { }
