@@ -1,14 +1,13 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
-
+import { StorageServiceModule } from 'ngx-webstorage-service';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent, NgbdModalContent } from './app.component';
 import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
 import { ReactiveFormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
-import { AppService } from './app.service';
+import { LocalStorageService } from './app.service';
 import { landingPageComponent } from './components/landing-page/landing-page.component';
-import { SidebarComponent } from './components/sidebar/sidebar.component';
 import { GraphComponent } from './components/graph/graph.component';
 import { DataService } from './services/data.service';
 import { StoreModule } from '@ngrx/store';
@@ -25,22 +24,25 @@ import { NgxSliderModule } from '@angular-slider/ngx-slider'
 
 import { CarouselModule } from 'ngx-owl-carousel-o';
 import { SearchFormComponent } from './components/search-form/search-form.component';
-import { AudioComponent } from './components/audio/audio.component';
+import { AudioComponent, AudioService } from './components/audio/audio.component';
 import { NodePopupComponent } from './components/node-popup/node-popup.component';
 import { EdgePopupComponent } from './components/edge-popup/edge-popup.component';
+import { RolesComponent } from './components/roles/roles.component';
+import { GraphService } from './services/graph.service';
+import { ThreeService } from './services/three.service';
 
 @NgModule({
   declarations: [
     AppComponent,
     NgbdModalContent,
     landingPageComponent,
-    SidebarComponent,
     GraphComponent,
     SliderComponent,
     SearchFormComponent,
     AudioComponent,
     NodePopupComponent,
-    EdgePopupComponent
+    EdgePopupComponent,
+    RolesComponent
   ],
   imports: [
     BrowserModule,
@@ -48,10 +50,11 @@ import { EdgePopupComponent } from './components/edge-popup/edge-popup.component
     NgbModule,
     ReactiveFormsModule,
     HttpClientModule,
+    StorageServiceModule,
     StoreModule.forRoot(
       AppReducers.reducers,
-      // { 
-      //   metaReducers: [offlineMetaReducer] 
+      // {
+      //   metaReducers: [offlineMetaReducer]
       // }
     ),
     StoreDevtoolsModule.instrument({
@@ -66,8 +69,12 @@ import { EdgePopupComponent } from './components/edge-popup/edge-popup.component
   ],
   providers: [
     // AppService,
-    DataService
+    DataService,
+    AudioService,
+    LocalStorageService,
+    GraphService,
+    ThreeService
   ],
-  bootstrap: [AppComponent]
+  bootstrap: [ AppComponent ]
 })
 export class AppModule { }

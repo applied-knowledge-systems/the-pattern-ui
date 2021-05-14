@@ -1,9 +1,9 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { 
-  ICreate, ICreateSuccess, 
-  IRead, IReadSuccess, 
-  IUpdate, IUpdateSuccess, 
+import {
+  ICreate, ICreateSuccess,
+  IRead, IReadSuccess,
+  IUpdate, IUpdateSuccess,
   IDelete, IDeleteSuccess
 } from '../redux/interfaces';
 import { Observable, of } from 'rxjs';
@@ -20,7 +20,7 @@ export class DataService {
 
   create(payload: ICreate): Observable<ICreateSuccess>{
     const status = this.checkPayloadStatus(payload);
-    return this.http.post<any>(this.baseUrl + '/' + payload.route, payload.data).pipe(map((data) => {
+    return this.http.post<any>(this.baseUrl + '/' + payload.route, payload.data,{withCredentials: true }).pipe(map((data) => {
       const response : ICreateSuccess = {
         id: data._id,
         data: data,
@@ -38,12 +38,14 @@ export class DataService {
 
   read(payload: IRead): Observable<IReadSuccess> {
     const status = this.checkPayloadStatus(payload);
-    return this.http.get<any>(this.baseUrl + '/' + payload.route, { params: payload.query }).pipe(map((data) => {
+    return this.http.get<any>(this.baseUrl + '/' + payload.route, { params: payload.query ,withCredentials: true }).pipe(map((data) => {
       const response: IReadSuccess = {
         data: data,
         state: payload.state,
         navigate: status.navigate,
-        navigateTo: payload.navigateTo
+        navigateTo: payload.navigateTo,
+        postProcess: payload.postProcess,
+        postProcessStatus: status.postProcessStatus
       }
       return response;
     }));
@@ -100,3 +102,5 @@ export class DataService {
     return result;
   }
 }
+
+

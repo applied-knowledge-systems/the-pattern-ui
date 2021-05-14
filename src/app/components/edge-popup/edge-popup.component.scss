@@ -5,6 +5,17 @@
 
     li{
         padding-bottom: 16px;
+
+        .title{
+          font-weight: 700;
+        }
+
+        .sentence {
+
+        }
+        .summary {
+
+        }
     }
 }
 
@@ -15,6 +26,10 @@
     height: calc(100vh - 64px);
     justify-content: center;
     align-items: center;
+}
+
+.audio-player{
+  margin-left: 16px;
 }
 
 
@@ -36,7 +51,7 @@
     width: 7px;
     height: 7px;
     border-radius: 50%;
-    background: #fff;
+    background: #263238;
     margin: -4px 0 0 -4px;
   }
   .lds-roller div:nth-child(1) {
@@ -103,4 +118,4 @@
       transform: rotate(360deg);
     }
   }
-  
+
