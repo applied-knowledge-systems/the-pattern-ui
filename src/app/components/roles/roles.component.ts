@@ -40,6 +40,7 @@ export class RolesComponent implements OnInit {
     route: ActivatedRoute, 
     private router: Router,
     private store: Store<State>) {
+      
     route.params.pipe(filter((x) => x["role"] !== undefined )).subscribe((params) => {
       this.selectedRole = params["role"];
       this.selectedRoleId = parseInt(params["id"]);

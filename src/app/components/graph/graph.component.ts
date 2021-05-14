@@ -42,17 +42,16 @@ export class GraphComponent implements OnInit {
   loading$;
   loadingState$;
   
-  constructor(private store: Store<State>, private modalService: NgbModal) {
-    
-  }
+  constructor(private store: Store<State>, private modalService: NgbModal) { }
 
   ngOnInit() {
     this.canvasHeight = window.innerHeight - 128;
     this.canvasWidth = window.innerWidth;
     this.store.select<any>(AppSelectors.selectSearchResults)
-      .pipe(filter(x => x!=null))
-      .subscribe((results) => {
-        console.log(results)
+      .pipe(
+        filter(x => x!=null),
+        distinctUntilChanged()
+      ).subscribe((results) => {
         this.emptySearch = false;
         this.gData = results;
         this.initializeGraph();

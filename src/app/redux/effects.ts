@@ -65,10 +65,17 @@ export class AppEffects {
                     switch(action.payload.postProcess){
                         case 'map:years':
                             let years = action.payload.data.years.sort();
-                            const min = years.reduce((p, v) =>  ( p < v ? p : v ));
-                            const max = years.reduce((p, v) => ( p > v ? p : v ));
-                            const mid = Math.ceil(years.length / 2);
-                            const median = years.length % 2 == 0 ? (years[mid] + years[mid - 1]) / 2 : years[mid - 1];
+                            let min = null;
+                            let max = null;
+                            let mid = null;
+                            let median = null;
+
+                            if(years.length > 0){
+                                min = years.reduce((p, v) =>  ( p < v ? p : v ));
+                                max = years.reduce((p, v) => ( p > v ? p : v ));
+                                mid = Math.ceil(years.length / 2);
+                                median = years.length % 2 == 0 ? (years[mid] + years[mid - 1]) / 2 : years[mid - 1];
+                            }
 
                             this.store.dispatch(new AppActions.Set({
                                 data: {

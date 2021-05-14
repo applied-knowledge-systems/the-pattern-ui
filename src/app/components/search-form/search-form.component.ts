@@ -38,34 +38,39 @@ export class SearchFormComponent implements OnInit {
 
   constructor(
     private store: Store<State>, 
-    fb: FormBuilder, route: ActivatedRoute,
+    fb: FormBuilder, 
+    private route: ActivatedRoute,
     private audioService: AudioService
   ) {
     this.searchForm = fb.group({
       'term': ['', Validators.required]
     });
 
-    route.queryParams.pipe(filter(x => x['q'] !== undefined)).subscribe(x => {
-      this.term.setValue(x['q']);
-      this.search();      
-    })
-    
-    route.params.pipe().subscribe(params => {
-      this.roleUri = `/view/${params.role}/${params.id}`;  
+    this.route.params.pipe().subscribe(params => {
+      this.roleUri = `view/${params.role}/${params.id}`;  
     })
   }
 
   ngOnInit() {
+    this.route.queryParams.pipe(
+      distinctUntilChanged(),
+      filter(x => x['q'] !== undefined),
+    ).subscribe(x => {
+      if(x['q'] !== this.term.value){
+        this.initSearch(x['q']);
+      }
+    })
+    
     this.store.select<any>(AppSelectors.selectAnswerResults).pipe(
+      distinctUntilChanged(),
       filter(x => x.results!== undefined),
-      filter(x => x.results.length>0),
-      distinctUntilChanged() ).subscribe((data) => {
+    ).subscribe((data) => {
         if(this.audioService.audioEnabled){
           console.log('play audio');
-          if(data.results!==undefined  && data.results[0].answer != undefined && data.results[0].answer != undefined){
+          if(data.results!==undefined  && data.results[0] != undefined && data.results[0].answer != undefined){
             this.audioService.addToQueue(data.results[0].answer)
-          }else{
-            this.audioService.addToQueue("Sorry, I don't know the answer to your question")
+          }else if(data.results.length == 0){
+            this.audioService.addToQueue("Sorry, I don't have the answer for your search query")
           }
         }
         else{
@@ -77,8 +82,6 @@ export class SearchFormComponent implements OnInit {
 
   search(){
     if(this.searchForm.valid){
-      console.log(this.roleUri)
-
       // create search request
       this.store.dispatch(new Create({
         data: { search: this.term.value },
@@ -97,7 +100,7 @@ export class SearchFormComponent implements OnInit {
 
       if(this.audioService.audioEnabled){
         this.audioService.addToQueue('Please wait as I retrieve an answer')
-      }      
+      }
 
       // set search term
       this.store.dispatch(new Set({
@@ -107,8 +110,10 @@ export class SearchFormComponent implements OnInit {
     }
   }
 
-  sampleSearch(term){
+  initSearch(term){
     this.term.setValue(term);
     this.search()
   }
+
+
 }

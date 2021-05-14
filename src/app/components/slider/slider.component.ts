@@ -56,9 +56,12 @@ export class SliderComponent implements OnInit {
 
   changeSliderOptions(years) {
     const newOptions: Options = Object.assign({}, this.options);
-    newOptions.stepsArray = years.list.map((year: string) => {
-      return { value: year }
-    });
+    if(years.list.length > 0){
+      newOptions.stepsArray = years.list.map((year: string) => {
+        return { value: year }
+      });
+    }
+    
     newOptions.ceil = years.max || this.initYear
     newOptions.floor = years.min || this.initYear
     this.year.setValue(years.median)
