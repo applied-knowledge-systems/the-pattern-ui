@@ -7,6 +7,7 @@ import { Read, Set as SetStoreValue } from 'src/app/redux/actions.js';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { NodePopupComponent } from '../components/node-popup/node-popup.component';
 import { EdgePopupComponent } from '../components/edge-popup/edge-popup.component';
+import { ThreeService } from './three.service';
 
 declare var ForceGraph3D;
 
@@ -17,9 +18,12 @@ export class GraphService {
   Graph: any;
   gData: any;
 
-  constructor(private store: Store<State>, private modalService: NgbModal) { }
+  constructor(
+    private store: Store<State>, 
+    private modalService: NgbModal,
+    private threeService: ThreeService) { }
 
-  populateGraph(htmlElement, height, width) {
+  populateGraph(htmlElement, height, width, renderType: string) {
     let highlightNodes = new Set();
     let highlightLinks = new Set();
     this.Graph = ForceGraph3D();
@@ -64,15 +68,19 @@ export class GraphService {
     this.Graph.onNodeClick(this.onNodeClick.bind(this));
     this.Graph.onLinkClick(this.onLinkClick.bind(this));
 
-    // this.threeScene = this.Graph.scene();
-    // this.threeRenderer = this.Graph.renderer();
-    // this.threeControls = this.Graph.controls();
-    // this.threeCamera = this.Graph.camera();
+    this.threeService.scene = this.Graph.scene();
+    this.threeService.renderer = this.Graph.renderer();
+    this.threeService.controls = this.Graph.controls();
+    this.threeService.camera = this.Graph.camera();
+
+    if(renderType === 'XR'){
+      this.threeService.enableXRRenderer()
+    }
+
+    this.threeService.getDetails()
 
     // this.addEdgeDetailsContainer();
     // this.postProcessing();
-
-    // this.initXR()
   }
 
   onNodeClick(node, event){
@@ -124,10 +132,10 @@ export class GraphService {
   }
 
   showNodeDetails() {
-    const modalRef = this.modalService.open(NodePopupComponent, { size: 'sm', scrollable: true });
+    this.modalService.open(NodePopupComponent, { size: 'sm', scrollable: true });
   }
 
   showEdgeDetails() {
-    const modalRef = this.modalService.open(EdgePopupComponent, { size: 'xl', scrollable: true });
+    this.modalService.open(EdgePopupComponent, { size: 'xl', scrollable: true });
   }
 }

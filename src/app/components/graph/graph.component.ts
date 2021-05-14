@@ -1,12 +1,10 @@
 import { Component, OnInit, ViewChild, ElementRef, HostListener, Input } from '@angular/core';
 import { UnrealBloomPass } from 'three/examples/jsm/postprocessing/UnrealBloomPass.js';
-import {VRButton} from 'three/examples/jsm/webxr/VRButton';
 import { Store } from '@ngrx/store';
 import { State } from '../../redux/state';
 import * as AppSelectors from '../../redux/selectors';
 import { filter, distinctUntilChanged } from 'rxjs/operators';
 import * as THREE from 'three';
-import ThreeMeshUI from 'three-mesh-ui';
 import { GraphService } from 'src/app/services/graph.service';
 
 
@@ -17,18 +15,12 @@ import { GraphService } from 'src/app/services/graph.service';
 })
 export class GraphComponent implements OnInit {
   emptySearch = true;
-  mode = '3D';
   canvasHeight: number;
   canvasWidth: number;
 
   @ViewChild('graph', { static: true }) graph: ElementRef;
   @Input() renderer: string
   @Input() controller: string
-
-  threeScene: any;
-  threeRenderer: any;
-  threeControls: any;
-  threeCamera: any;
 
   loading$;
   loadingState$;
@@ -48,7 +40,7 @@ export class GraphComponent implements OnInit {
       ).subscribe((results) => {
         this.emptySearch = false;
         this.graphService.gData = results;
-        this.graphService.populateGraph(this.graph.nativeElement, this.canvasHeight, this.canvasWidth);
+        this.graphService.populateGraph(this.graph.nativeElement, this.canvasHeight, this.canvasWidth, this.renderer);
       }
     );
 
@@ -60,7 +52,7 @@ export class GraphComponent implements OnInit {
   onResize(event) {
     this.canvasHeight = window.innerHeight - 128;
     this.canvasWidth = window.innerWidth;
-    this.graphService.populateGraph(this.graph.nativeElement, this.canvasHeight, this.canvasHeight)
+    this.graphService.populateGraph(this.graph.nativeElement, this.canvasHeight, this.canvasHeight, this.renderer)
   }
 
   postProcessing(){
@@ -80,37 +72,9 @@ export class GraphComponent implements OnInit {
     // this.Graph.postProcessingComposer().addPass(bloomPass);
   }
 
-  initXR(){
-    if(this.renderer == 'XR'){
-      this.threeRenderer.xr.enabled = true;
-      document.body.appendChild(VRButton.createButton(this.threeRenderer));
-      this.threeRenderer.setAnimationLoop(() => {
-        this.threeRenderer.render(this.threeScene, this.threeCamera)
-      });
-    }
-    
-  }
+  
 
-  addEdgeDetailsContainer(){
-    console.log('edge')
-    const container = new ThreeMeshUI.Block({
-      width: 1.2,
-      height: 0.7,
-      padding: 0.2,
-      fontFamily: '../../../assets/Roboto-msdf.json',
-      fontTexture: '.../../../assets/Roboto-msdf.png',
-     });
-
-    const text = new ThreeMeshUI.Text({
-      content: "Some text to be displayed"
-    });
-
-    container.position.set( 0, 1, -1.8 );
-    container.rotation.x = 0;
-     
-    container.add( text );
-    this.threeScene.add( container );
-  }
+  
 
   addRoomToScence(){
     // const room = new THREE.LineSegments(
