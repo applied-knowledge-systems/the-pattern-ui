@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 import { Effect, Actions, ofType } from '@ngrx/effects';
 import { of, } from 'rxjs';
-import { tap, map, catchError, mergeMap } from 'rxjs/operators';
+import { tap, map, catchError, mergeMap, filter } from 'rxjs/operators';
 
 import * as AppActions from './actions';
 import { ICreateSuccess, IReadSuccess, IUpdateSuccess, IDeleteSuccess, IAuthSuccess, ISignupSuccess } from './interfaces';
@@ -29,6 +29,7 @@ export class AppEffects {
     @Effect({ dispatch: false }) deleteSuccess$;
     @Effect({ dispatch: false }) deleteFailed$;
     term:any;
+    roleUri = '';
     constructor(
         private actions$: Actions,
         private router: Router,
@@ -38,6 +39,10 @@ export class AppEffects {
     ) {
         this.store.select(AppSelectors.selectSearchTerm).subscribe(term => {
             this.term=term;
+        });
+
+        this.store.select(AppSelectors.selectActiveRole).pipe(filter(x => x!= null)).subscribe(role => {
+            this.roleUri=`/view/${role.uri}/${role.id}`;
         });
 
         this.create$ = this.actions$.pipe(
@@ -130,7 +135,7 @@ export class AppEffects {
                         state: 'searchResults',
                         postProcess: 'map:years',
                         route: 'search',
-                        navigateTo: { route: 'search', query: { q: this.term }}
+                        navigateTo: { route: this.roleUri, query: { q: this.term }}
                       }));
 
                   }
