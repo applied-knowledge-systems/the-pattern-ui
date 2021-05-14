@@ -42,7 +42,7 @@ export class AppEffects {
         });
 
         this.store.select(AppSelectors.selectActiveRole).pipe(filter(x => x!= null)).subscribe(role => {
-            this.roleUri=`/view/${role.uri}/${role.id}`;
+            this.roleUri=`view/${role.uri}/${role.id}`;
         });
 
         this.create$ = this.actions$.pipe(

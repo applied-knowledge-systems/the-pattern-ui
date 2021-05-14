@@ -28,6 +28,7 @@ import { AudioComponent, AudioService } from './components/audio/audio.component
 import { NodePopupComponent } from './components/node-popup/node-popup.component';
 import { EdgePopupComponent } from './components/edge-popup/edge-popup.component';
 import { RolesComponent } from './components/roles/roles.component';
+import { GraphService } from './services/graph.service';
 
 @NgModule({
   declarations: [
@@ -69,7 +70,8 @@ import { RolesComponent } from './components/roles/roles.component';
     // AppService,
     DataService,
     AudioService,
-    LocalStorageService
+    LocalStorageService,
+    GraphService
   ],
   bootstrap: [ AppComponent ]
 })
