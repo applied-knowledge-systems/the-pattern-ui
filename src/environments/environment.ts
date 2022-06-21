@@ -1,5 +1,5 @@
 export const environment = {
   production: false,
-  redisUrl: 'http://localhost:8080'
+  redisUrl: 'https://api.thepattern.digital'
 };
 
