@@ -28,6 +28,13 @@ export class RolesComponent implements OnInit {
       threeView: 'XR', // 3D, XR
       controller: 'VRCtrcl'
     },
+    {
+      label: "Analyst",
+      uri: "analyst",
+      audioEnabled: false,
+      threeView: '3D', // 3D, XR
+      controller: 'VRCtrcl'
+    },
   ];
 
   selectedRole: any = null;
@@ -37,7 +44,7 @@ export class RolesComponent implements OnInit {
 
 
   constructor(
-    route: ActivatedRoute, 
+    route: ActivatedRoute,
     private router: Router,
     private store: Store<State>) {
 
@@ -50,7 +57,7 @@ export class RolesComponent implements OnInit {
         data: this.roles[this.selectedRoleId].audioEnabled,
         state: 'audioEnabled'
       }));
-      
+
     });
 
     route.data.subscribe((data) => {
